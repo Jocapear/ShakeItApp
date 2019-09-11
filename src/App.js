@@ -1,24 +1,22 @@
 import React from 'react';
-import Login from './components/Login';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Navigation from './Navigation.js';
+import SignUp from './pages/SignUp.js';
+
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Shake it!
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Get a promo code
-        </a>
-        <Login />
-      </header>
+      <Router>
+        <div>
+          <Navigation />
+
+          <hr />
+
+          <Route path={'/sign-up'} component={SignUp} />
+        </div>
+      </Router>
     </div>
   );
 }
