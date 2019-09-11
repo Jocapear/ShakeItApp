@@ -1,5 +1,4 @@
 import React from 'react';
-import Login from './components/Login';
 import './App.css';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
         >
           Get a promo code
         </a>
-        <Login />
       </header>
     </div>
   );
