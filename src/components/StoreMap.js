@@ -29,7 +29,11 @@ const StoreMap = ({ attribution, url }) => {
       ref={map}
     >
       <TileLayer url={url} attribution={attribution} />
-      <Marker position={[20.7326234, -103.4297673]}></Marker>
+      <Marker position={[20.7326234, -103.4297673]}>
+        <Popup>
+          <b style={{ fontWeight: 'bold' }}>AppleBee's</b>
+        </Popup>
+      </Marker>
     </Map>
   )
 }
