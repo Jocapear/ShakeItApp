@@ -1,22 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Navigation from './Navigation.js';
-import SignUp from './pages/SignUp.js';
-
 import './App.css';
+import StoreMap from './components/StoreMap';
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <div>
-          <Navigation />
-
-          <hr />
-
-          <Route path={'/sign-up'} component={SignUp} />
-        </div>
-      </Router>
+      <header className="App-header">
+        <p>
+          Shake it!
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Get a promo code
+        </a>
+        <StoreMap />
+      </header>
+    
     </div>
   );
 }
