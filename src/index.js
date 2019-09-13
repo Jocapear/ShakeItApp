@@ -15,28 +15,30 @@ import { AuthContextProvider } from './AuthContext';
 firebase.initializeApp(firebaseConfig);
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(false)
-  const [isLoadingAuth, setLoadingAuth] = useState(true)
-  const [user, setUser] = useState(null)
-  
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoadingAuth, setLoadingAuth] = useState(true);
+  const [user, setUser] = useState(null);
+
   function readSession() {
     const userJSONStr = window.sessionStorage.getItem(
-			`firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+      `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
     );
 
-		if (userJSONStr) {
-      setLoggedIn(true)
-      setUser(JSON.parse(userJSONStr))
+    if (userJSONStr) {
+      setLoggedIn(true);
+      setUser(JSON.parse(userJSONStr));
     }
   }
 
   useEffect(() => {
-    readSession()
-    setLoadingAuth(false)
-  }, [])
+    readSession();
+    setLoadingAuth(false);
+  }, []);
 
   return (
-    <AuthContextProvider value={{ isLoggedIn, setLoggedIn, isLoadingAuth, user, setUser }}>
+    <AuthContextProvider
+      value={{ isLoggedIn, setLoggedIn, isLoadingAuth, user, setUser }}
+    >
       <div className="App">
         <Router>
           <Switch>
@@ -64,5 +66,5 @@ function App() {
   );
 }
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById('root');
 ReactDOM.render(<App />, rootElement);

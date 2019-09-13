@@ -21,6 +21,12 @@
     "lint:fix": "eslint --fix './src/**/*.{js,jsx}'",
     "eject": "react-scripts eject"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint:fix",
+      "pre-push": "yarn lint:fix"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -39,6 +45,7 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^3.0.5",
     "prettier": "^1.18.2"
   }
 }
