@@ -62,3 +62,6 @@ typings/
 .next
 
 src/firebaseConfig.js
+
+# vscode
+.vscode/

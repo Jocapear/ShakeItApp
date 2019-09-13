@@ -3,25 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "leaflet": "^1.5.1",
-    "react-leaflet": "^2.4.0",
     "firebase": "^6.6.0",
+    "leaflet": "^1.5.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-google-login": "^5.0.5",
-    "react-router": "^5.0.1",
+    "react-leaflet": "^2.4.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "react-with-firebase-auth": "^1.0.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "EXTEND_ESLINT=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "eslint './src/**/*.{js,jsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{js,jsx}'",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -34,5 +32,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.2",
+    "babel-eslint": "^10.0.3",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2"
   }
 }
