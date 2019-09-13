@@ -11,11 +11,12 @@
         "jest": true
     },
     "rules": {
+        "react/no-unescaped-entities": "off",
         "prettier/prettier": [
             "warn",
             {
                 "singleQuote": true,
-                "trailingComma": true
+                "trailingComma": "es5"
             }
         ]
     },

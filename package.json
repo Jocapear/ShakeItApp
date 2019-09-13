@@ -23,8 +23,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint:fix",
-      "pre-push": "yarn lint:fix"
+      "pre-commit": "yarn lint:fix"
     }
   },
   "browserslist": {
@@ -41,7 +40,6 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.2",
-    "babel-eslint": "^10.0.3",
     "eslint-config-prettier": "^6.3.0",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-prettier": "^3.1.0",
