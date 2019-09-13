@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import routes from "../routes";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../index";
+import { useAuth } from "../AuthContext";
 
 const Header = () => {
-  const {isLoggedIn} = useContext(AuthContext);
+  const { isLoggedIn } = useAuth();
   return (
     <ul className="nav">
     {routes.map((route, i) => (

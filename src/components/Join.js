@@ -1,56 +1,65 @@
-import React, { useState, useContext } from "react";
-import * as firebase from 'firebase'
-import { withRouter } from 'react-router-dom';
-import { AuthContext } from "..";
-import '../App.css';
+import React, { useState } from 'react'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import { withRouter, Link, Redirect } from 'react-router-dom'
+import { useAuth } from '../AuthContext'
+import '../App.css'
 
 const Join = ({ history }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setErrors] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setErrors] = useState("")
+    const Auth = useAuth()
 
-    const Auth = useContext(AuthContext);
+    if (Auth.isLoadingAuth) {
+        return <p>Loading...</p>
+    }
+
+    if (Auth.isLoggedIn) {
+        return <Redirect to={{ pathname: '/shake' }} />
+    }
+
     const handleForm = e => {
-        e.preventDefault();
+        e.preventDefault()
 
-        firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            .then(() => {
-                firebase
-                    .auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then(res => {
-                        console.log(res)
-                        history.push('/shake')
-                        if (res.user) {
-                            Auth.setLoggedIn(true);
-                        }
+        firebase.auth()
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then(() => {
+                    firebase
+                        .auth()
+                        .createUserWithEmailAndPassword(email, password)
+                        .then(res => {
+                            console.log(res)
+                            history.push('/shake')
+                            if (res.user) {
+                                Auth.setLoggedIn(true)
+                                Auth.setUser(res.user)
+                            }
+                    })
+                    .catch(e => {
+                        setErrors(e.message)
+                    })
                 })
-                .catch(e => {
-                    setErrors(e.message);
-                });
-            });
-    };
+    }
 
     const handleGoogleLogin = () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = new firebase.auth.GoogleAuthProvider()
 
         firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            .then(() => {
-                firebase
-                    .auth()
-                    .signInWithPopup(provider)
-                    .then(result => {
-                        console.log(result)
-                        history.push('/shake')
-                        Auth.setLoggedIn(true)
-                    })
-                    .catch(e => setErrors(e.message));
-            });
-    };
+            .auth()
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then(() => {
+                    firebase
+                        .auth()
+                        .signInWithPopup(provider)
+                        .then(res => {
+                            history.push('/shake')
+                            Auth.setLoggedIn(true)
+                            Auth.setUser(res.user)
+                        })
+                        .catch(e => setErrors(e.message))
+                })
+    }
 
     return (
         <div className="App">
@@ -80,13 +89,17 @@ const Join = ({ history }) => {
                         Join With Google
                     </button>
 
-                    <button type="submit">Login</button>
+                    <button type="submit">Sign up</button>
+                    <p>Already have an account?</p>
+                    <Link to="/">
+                        Log in here.
+                    </Link>
 
                     <span>{error}</span>
                 </form>
             </header>
     </div>
-    );
-};
+    )
+}
 
-export default withRouter(Join);
+export default withRouter(Join)
