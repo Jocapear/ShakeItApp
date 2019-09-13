@@ -19,7 +19,6 @@ function App() {
         </a>
         <StoreMap />
       </header>
-    
     </div>
   );
 }

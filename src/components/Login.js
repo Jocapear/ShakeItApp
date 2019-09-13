@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../index";
-import * as firebase from 'firebase'
+import firebase from 'firebase';
 import { withRouter } from 'react-router-dom'
 import '../App.css';
 
@@ -11,7 +11,6 @@ const Login = ({history}) => {
 
   const Auth = useContext(AuthContext);
   const handleForm = e => {
-
     e.preventDefault();
     firebase
     .auth()

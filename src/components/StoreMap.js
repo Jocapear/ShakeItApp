@@ -1,5 +1,5 @@
-import React, { useCallback, useRef } from 'react'
-import L, { geoJSON } from 'leaflet'
+import React, { useRef } from 'react'
+import L from 'leaflet'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import '../styles/StoreMap.css'
 

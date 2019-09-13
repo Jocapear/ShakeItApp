@@ -22,7 +22,9 @@ function App() {
     const user = window.sessionStorage.getItem(
 			`firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
 		);
-		if (user) setLoggedIn(true)
+		if (user) {
+      setLoggedIn(true)
+    }
   }
   useEffect(() => {
     readSession()
