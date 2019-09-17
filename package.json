@@ -14,7 +14,7 @@
     "react-with-firebase-auth": "^1.0.4"
   },
   "scripts": {
-    "start": "EXTEND_ESLINT=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint './src/**/*.{js,jsx}'",

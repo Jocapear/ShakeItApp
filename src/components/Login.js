@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { object } from 'prop-types';
 import firebase from 'firebase';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import '../App.css';
 import { useAuth } from '../AuthContext';
 
-const Login = () => {
+const Login = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setErrors] = useState('');
@@ -97,6 +98,10 @@ const Login = () => {
       </header>
     </div>
   );
+};
+
+Login.propTypes = {
+  history: object,
 };
 
 export default withRouter(Login);

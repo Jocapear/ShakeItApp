@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { object } from 'prop-types';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import '../App.css';
 
-const Join = () => {
+const Join = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setErrors] = useState('');
@@ -103,6 +104,10 @@ const Join = () => {
       </header>
     </div>
   );
+};
+
+Join.propTypes = {
+  history: object,
 };
 
 export default withRouter(Join);
