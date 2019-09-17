@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import '../styles/StoreMap.css';
@@ -42,6 +42,8 @@ const StoreMap = ({ latitude, longitude, attribution, url }) => {
 StoreMap.propTypes = {
   url: string,
   attribution: string,
+  latitude: number,
+  longitude: number,
 };
 
 StoreMap.defaultProps = {
