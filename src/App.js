@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import StoreMap from './components/StoreMap';
+import Coupon from './components/Coupon';
 
 function App() {
   return (
@@ -15,7 +15,8 @@ function App() {
         >
           Get a promo code
         </a>
-        <StoreMap />
+        <Coupon />
+        <br></br>
       </header>
     </div>
   );

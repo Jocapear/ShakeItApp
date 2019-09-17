@@ -19,18 +19,18 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const StoreMap = ({ attribution, url }) => {
+const StoreMap = ({ latitude, longitude, attribution, url }) => {
   const map = useRef(null);
 
   return (
     <Map
       boundOptions={{ padding: [100, 100] }}
-      center={[20.7326234, -103.4297673]}
+      center={[latitude, longitude]}
       zoom={15}
       ref={map}
     >
       <TileLayer url={url} attribution={attribution} />
-      <Marker position={[20.7326234, -103.4297673]}>
+      <Marker position={[latitude, longitude]}>
         <Popup>
           <b style={{ fontWeight: 'bold' }}>AppleBee's</b>
         </Popup>
