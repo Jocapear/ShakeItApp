@@ -42,6 +42,15 @@ class Show extends Component{
 
   }
 
+  delete(id){
+    firebase.database().ref().child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/' + this.props.match.params.id + '/Cupones/' + id).remove().then(() => {
+      console.log("Coupon successfully deleted!");
+      //this.props.history.push("/")
+    }).catch((error) => {
+      console.error("Error removing coupon: ", error);
+    });
+  }
+
   render(){
     const {cupones} = this.state;
     return(
@@ -55,14 +64,18 @@ class Show extends Component{
             <tr>
               <th> Cupón </th>
               <th> Cantidad </th>
+              <th> Delete </th>
             </tr>
           </thead>
           <tbody>
           {cupones.map(cupon =>
-            <tr key={cupon.ID}>
-              <td>{cupon.Promo}</td>
-              <td>{cupon.Cantidad}</td>
-            </tr>
+
+              <tr key={cupon.ID}>
+                <td>{cupon.Promo}</td>
+                <td>{cupon.Cantidad}</td>
+                <td> <button onClick={this.delete.bind(this, cupon.ID)} class="btn btn-danger">Delete</button> </td>
+              </tr>
+
           )}
           </tbody>
         </table>
@@ -72,9 +85,5 @@ class Show extends Component{
     );
   }
 }
-/*
-<div className="card float-left" key={cupon.ID}>
-  {cupon.Promo}
-</div>)}*/
 
 export default Show;
