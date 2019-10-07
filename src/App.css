@@ -31,3 +31,12 @@
     transform: rotate(360deg);
   }
 }
+
+a:link {
+  color: skyblue;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
