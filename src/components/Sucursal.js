@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
-import Header from './Header.js'
 
 class Show extends Component{
   constructor(props){
@@ -34,7 +33,6 @@ class Show extends Component{
       snapshot.forEach(function(child) {
         newState.push(child.val());
       });
-      console.log(newState);
       this.setState({
         cupones: newState
       });
@@ -59,6 +57,7 @@ class Show extends Component{
         <h1>{this.state.restaurante}</h1>
         <h2>{this.state.sucursal}</h2>
         <h2>Cupones:</h2>
+        <Link to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}>Create Coupon</Link>
         <table>
           <thead>
             <tr>
@@ -73,7 +72,7 @@ class Show extends Component{
               <tr key={cupon.ID}>
                 <td>{cupon.Promo}</td>
                 <td>{cupon.Cantidad}</td>
-                <td> <button onClick={this.delete.bind(this, cupon.ID)} class="btn btn-danger">Delete</button> </td>
+                <td> <button onClick={this.delete.bind(this, cupon.ID)} className="btn btn-danger">Delete</button> </td>
               </tr>
 
           )}

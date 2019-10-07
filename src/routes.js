@@ -3,6 +3,7 @@ import Join from './components/Join';
 import Restaurant from './components/Restaurant';
 import Show from './components/Show';
 import Sucursal from './components/Sucursal';
+import AddCoupon from './components/AddCoupon';
 
 
 const routes = [
@@ -12,6 +13,7 @@ const routes = [
   { name: 'Restaurants', path: '/restaurant', exact: true, main: Restaurant },
   { name: 'Show', path: '/show/:id', exact: false, main: Show },
   { name: 'Sucursal', path: '/sucursal/:res/:id', exact: false, main: Sucursal },
+  { name: 'AddCoupon', path: '/add/:res/:id', exact: false, main: AddCoupon },
 ];
 
 export default routes;
