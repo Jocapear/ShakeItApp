@@ -11,7 +11,7 @@ const routes = [
   { name: 'Login', path: '/login', exact: true, main: Login },
   { name: 'Restaurants', path: '/restaurant', exact: true, main: Restaurant },
   { name: 'Show', path: '/show/:id', exact: false, main: Show },
-  { name: 'Sucursal', path: '/show/sucursal/:id', exact: false, main: Sucursal },
+  { name: 'Sucursal', path: '/sucursal/:res/:id', exact: false, main: Sucursal },
 ];
 
 export default routes;

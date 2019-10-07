@@ -41,7 +41,7 @@ class Show extends Component{
         <h2>Sucursales:</h2>
         {sucursales.map(sucursal =>
             <div className="card float-left" key={sucursal.ID}>
-              <Link to={`/show/sucursal/${sucursal.ID}`}>{sucursal.Nombre}</Link>
+              <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link>
             </div>
         )}
       </div>
