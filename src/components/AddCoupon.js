@@ -26,7 +26,7 @@ class AddCoupon extends Component{
 
   onSubmit = (e) => {
     e.preventDefault();
-
+    const path = '/sucursal/' + this.props.match.params.res + '/' + this.props.match.params.id + '/';
     const { Cantidad, ID, Promo} = this.state;
     var newChildRef = this.ref.push({Cantidad: Cantidad});
     this.ref.child(newChildRef.key).update({
@@ -38,17 +38,7 @@ class AddCoupon extends Component{
         ID: '',
         Promo: ''
       });
-    /*this.ref.push({
-      Cantidad,
-      this.ref.name(),
-      Promo
-    }).then((couponRef) => {
-      this.setState({
-        Cantidad: '',
-        ID: '',
-        Promo: ''
-      });*/
-      this.props.history.push("/restaurant/");
+      this.props.history.push(path);
     })
     .catch((error) => {
       console.error("Error adding coupont", error);
