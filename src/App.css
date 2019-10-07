@@ -18,6 +18,11 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.Back-link {
+  background-color: #282c34;
+  min-height: 100vh;
+  align-items: flex-start;
+}
 
 .App-link {
   color: #61dafb;

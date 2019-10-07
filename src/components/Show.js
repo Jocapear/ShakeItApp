@@ -33,11 +33,13 @@ class Show extends Component{
 
   }
 
-  
+
 
   render(){
     const {sucursales} = this.state;
     return(
+      <div className='Back-link'>
+        <Link to= "/restaurant">Regresar</Link>
       <div className='App-header'>
         <h1>{this.state.nombre}</h1>
         <h2>Sucursales:</h2>
@@ -46,6 +48,7 @@ class Show extends Component{
               <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link>
             </div>
         )}
+      </div>
       </div>
     );
   }

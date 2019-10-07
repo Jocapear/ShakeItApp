@@ -52,34 +52,37 @@ class Show extends Component{
   render(){
     const {cupones} = this.state;
     return(
+      <div className='Back-link'>
+        <Link to= {`/show/${this.props.match.params.res}`}>Regresar</Link>
+        <div className='App-header'>
 
-      <div className='App-header'>
-        <h1>{this.state.restaurante}</h1>
-        <h2>{this.state.sucursal}</h2>
-        <h2>Cupones:</h2>
-        <Link to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}>Create Coupon</Link>
-        <table>
-          <thead>
-            <tr>
-              <th> Cupón </th>
-              <th> Cantidad </th>
-              <th> Delete </th>
-            </tr>
-          </thead>
-          <tbody>
-          {cupones.map(cupon =>
-
-              <tr key={cupon.ID}>
-                <td>{cupon.Promo}</td>
-                <td>{cupon.Cantidad}</td>
-                <td> <button onClick={this.delete.bind(this, cupon.ID)} className="btn btn-danger">Delete</button> </td>
+          <h1>{this.state.restaurante}</h1>
+          <h2>{this.state.sucursal}</h2>
+          <h2>Cupones:</h2>
+          <Link to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}>Create Coupon</Link>
+          <table>
+            <thead>
+              <tr>
+                <th> Cupón </th>
+                <th> Cantidad </th>
+                <th> Delete </th>
               </tr>
+            </thead>
+            <tbody>
+            {cupones.map(cupon =>
 
-          )}
-          </tbody>
-        </table>
+                <tr key={cupon.ID}>
+                  <td>{cupon.Promo}</td>
+                  <td>{cupon.Cantidad}</td>
+                  <td> <button onClick={this.delete.bind(this, cupon.ID)} className="btn btn-danger">Delete</button> </td>
+                </tr>
+
+            )}
+            </tbody>
+          </table>
 
 
+        </div>
       </div>
     );
   }
