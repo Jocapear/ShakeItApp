@@ -39,6 +39,7 @@ class restaurant extends Component {
               </div>)}</h3>
         </div>
         </section>
+        <Link to="/add">Crear restaurante</Link>
       </div>
     );
   }

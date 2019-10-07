@@ -38,18 +38,27 @@ class Show extends Component{
   render(){
     const {sucursales} = this.state;
     return(
-      <div className='Back-link'>
-        <Link to= "/restaurant">Regresar</Link>
-      <div className='App-header'>
-        <h1>{this.state.nombre}</h1>
-        <h2>Sucursales:</h2>
-        {sucursales.map(sucursal =>
-            <div className="card float-left" key={sucursal.ID}>
-              <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link>
-            </div>
-        )}
+      <div>
+        <div className='Back-link'>
+          <Link to= "/restaurant">Regresar</Link>
+          <div className='App-header'>
+            <section id="sucursales">
+            <div>
+              <h1>{this.state.nombre}</h1>
+              <h2>Sucursales:</h2>
+              {sucursales.map(sucursal =>
+                <div className="card float-left" key={sucursal.ID}>
+                <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link>
+                </div>
+              )}
+              </div>
+            </section>
+            <p></p>
+          <Link to={`/add/${this.state.key}`}>Crear Sucursal</Link>
+        </div>
+        </div>
       </div>
-      </div>
+
     );
   }
 }

@@ -4,6 +4,8 @@ import Restaurant from './components/Restaurant';
 import Show from './components/Show';
 import Sucursal from './components/Sucursal';
 import AddCoupon from './components/AddCoupon';
+import AddSucursal from './components/AddSucursal';
+import AddRestaurant from './components/AddRestaurant';
 
 
 const routes = [
@@ -14,6 +16,8 @@ const routes = [
   { name: 'Show', path: '/show/:id', exact: false, main: Show },
   { name: 'Sucursal', path: '/sucursal/:res/:id', exact: false, main: Sucursal },
   { name: 'AddCoupon', path: '/add/:res/:id', exact: false, main: AddCoupon },
+  { name: 'AddSucursal', path: '/add/:res', exact: false, main: AddSucursal },
+  { name: 'AddRestaurant', path: '/add', exact: true, main: AddRestaurant },
 ];
 
 export default routes;

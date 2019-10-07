@@ -49,6 +49,18 @@ class Show extends Component{
     });
   }
 
+  use(id, cantidad){
+    const ref = firebase.database().ref().child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/' + this.props.match.params.id + '/Cupones/'+ id);
+    ref.update({
+      Cantidad: cantidad-1
+    }).then(() => {
+
+      console.log("Coupon successfully used!");
+    }).catch((error) => {
+      console.error("Error removing coupon: ", error);
+    });
+  }
+
   render(){
     const {cupones} = this.state;
     return(
@@ -59,13 +71,14 @@ class Show extends Component{
           <h1>{this.state.restaurante}</h1>
           <h2>{this.state.sucursal}</h2>
           <h2>Cupones:</h2>
-          <Link to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}>Create Coupon</Link>
+          <Link to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}>Crear Cupón</Link>
           <table>
             <thead>
               <tr>
                 <th> Cupón </th>
                 <th> Cantidad </th>
-                <th> Delete </th>
+                <th> Usar </th>
+                <th> Borrar </th>
               </tr>
             </thead>
             <tbody>
@@ -74,7 +87,8 @@ class Show extends Component{
                 <tr key={cupon.ID}>
                   <td>{cupon.Promo}</td>
                   <td>{cupon.Cantidad}</td>
-                  <td> <button onClick={this.delete.bind(this, cupon.ID)} className="btn btn-danger">Delete</button> </td>
+                  <td> <button onClick={this.use.bind(this, cupon.ID, cupon.Cantidad)} className="btn">Usar</button> </td>
+                  <td> <button onClick={this.delete.bind(this, cupon.ID)} className="btn" >Borrar</button> </td>
                 </tr>
 
             )}

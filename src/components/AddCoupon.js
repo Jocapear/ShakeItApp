@@ -9,9 +9,7 @@ class AddCoupon extends Component{
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       Cantidad: '',
-      ID: Date.now(),
       Promo: ''
-
     }
   }
 
@@ -27,7 +25,7 @@ class AddCoupon extends Component{
   onSubmit = (e) => {
     e.preventDefault();
     const path = '/sucursal/' + this.props.match.params.res + '/' + this.props.match.params.id + '/';
-    const { Cantidad, ID, Promo} = this.state;
+    const { Cantidad, Promo} = this.state;
     var newChildRef = this.ref.push({Cantidad: Cantidad});
     this.ref.child(newChildRef.key).update({
       ID: newChildRef.key,
@@ -35,7 +33,6 @@ class AddCoupon extends Component{
     }).then((couponRef) => {
       this.setState({
         Cantidad: '',
-        ID: '',
         Promo: ''
       });
       this.props.history.push(path);
@@ -59,7 +56,7 @@ class AddCoupon extends Component{
              <label htmlFor="Cantidad">Cantidad:</label>
              <input type="number" className="form-control" name="Cantidad" onChange={this.onChange} placeholder="Cantidad" />
            </div>
-           <button type="submit" className="btn btn-success">Submit</button>
+           <button type="submit" className="btn-success">Submit</button>
         </form>
       </div>
     )
