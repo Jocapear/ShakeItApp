@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import firebase from 'firebase';
-//import config from '../firebaseConfig';
+import { Link } from 'react-router-dom';
 
 class restaurant extends Component {
   constructor(props){
@@ -14,13 +14,9 @@ class restaurant extends Component {
     const restRef = firebase.database().ref().child('/Restaurantes/');
     restRef.on('value', snapshot => {
       var newState = [];
-      console.log(newState);
       snapshot.forEach(function(child) {
-        // var item = child.val();
-        // item.key = child.key;
         newState.push(child.val());
       });
-      console.log(newState);
       this.setState({
         restaurantes: newState
       });
@@ -29,7 +25,6 @@ class restaurant extends Component {
   }
 
   render(){
-   console.log(this.state);
     const {restaurantes} = this.state;
     return(
       <div className = 'App-header'>
@@ -38,7 +33,7 @@ class restaurant extends Component {
           <h1>Restaurantes</h1>
           <h3>{restaurantes.map(restaurante =>
               <div className="card float-left" key={restaurante.ID}>
-                {restaurante.Nombre}
+                <Link to={`/show/${restaurante.ID}`}> {restaurante.Nombre}</Link>
               </div>)}</h3>
         </div>
         </section>
