@@ -62,6 +62,7 @@ class Show extends Component{
   }
 
   render(){
+    this.delete = this.delete.bind(this);
     const {cupones} = this.state;
     return(
       <div className='Back-link'>
@@ -88,7 +89,7 @@ class Show extends Component{
                   <td>{cupon.Promo}</td>
                   <td>{cupon.Cantidad}</td>
                   <td> <button onClick={this.use.bind(this, cupon.ID, cupon.Cantidad)} className="btn">Usar</button> </td>
-                  <td> <button onClick={this.delete.bind(this, cupon.ID)} className="btn" >Borrar</button> </td>
+                  <td> <button onClick= {() => {if(window.confirm('Do you want to delete this coupon?')){this.delete(cupon.ID)};}} className="btn" >Borrar</button> </td>
                 </tr>
 
             )}
