@@ -1,22 +1,12 @@
 import React from 'react';
 import './App.css';
+import Header from './components/Header';
 import Coupon from './components/Coupon';
-import { Menu, MenuItem } from 'semantic-ui-react';
 
 function App() {
   return (
     <div className="App">
-      <Menu
-        secondary={true}
-        pointing={true}
-        defaultActiveIndex={0}
-        items={[
-          <MenuItem key={'shake-it'}>Shake it!</MenuItem>,
-          <MenuItem position="right" key={'logout'}>
-            Logout
-          </MenuItem>,
-        ]}
-      />
+      <Header />
       <a
         className="App-link"
         href="https://reactjs.org"

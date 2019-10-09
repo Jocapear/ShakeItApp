@@ -1,23 +1,22 @@
 import React from 'react';
-import routes from '../routes';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import { Menu, MenuItem } from 'semantic-ui-react';
 
 const Header = () => {
-  const { isLoggedIn } = useAuth();
   return (
-    <ul className="nav">
-      {routes.map((route, i) => (
-        <li key={i}>
-          <Link to={route.path}>{route.name}</Link>
-        </li>
-      ))}
-      {isLoggedIn && (
-        <li>
+    <Menu
+      secondary={true}
+      pointing={true}
+      defaultActiveIndex={0}
+      items={[
+        <MenuItem key={'shake-it'}>
           <Link to="/shake">Shake It</Link>
-        </li>
-      )}
-    </ul>
+        </MenuItem>,
+        <MenuItem position="right" key={'logout'}>
+          Logout
+        </MenuItem>,
+      ]}
+    />
   );
 };
 
