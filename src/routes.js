@@ -7,7 +7,7 @@ import AddCoupon from './components/AddCoupon';
 import AddSucursal from './components/AddSucursal';
 import AddRestaurant from './components/AddRestaurant';
 import EditCoupon from './components/EditCoupon';
-
+import Coupon from './components/Coupon';
 
 const routes = [
   { name: 'Root', path: '/', exact: true, main: Login },
@@ -20,6 +20,7 @@ const routes = [
   { name: 'AddSucursal', path: '/add/:res', exact: false, main: AddSucursal },
   { name: 'AddRestaurant', path: '/add', exact: true, main: AddRestaurant },
   { name: 'EditCoupon', path: '/edit/:res/:suc/:id', exact: false, main: EditCoupon },
+  { name: 'Coupon', path: '/coupon', exact: true, main: Coupon },
 ];
 
 export default routes;
