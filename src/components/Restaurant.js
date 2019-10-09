@@ -37,6 +37,9 @@ class restaurant extends Component {
     this.delete = this.delete.bind(this);
     const {restaurantes} = this.state;
     return(
+      <div>
+        <div className='Back-link'>
+          <Link to= "/shake">Regresar</Link>
       <div className = 'App-header'>
         <section id="restaurantes">
         <div>
@@ -54,7 +57,7 @@ class restaurant extends Component {
               <tr key={restaurante.ID}>
                 <td><Link to={`/show/${restaurante.ID}`}> {restaurante.Nombre}</Link></td>
                 <td> <button onClick= {() => {if(window.confirm('¿Quiéres borrar esta sucursal?')){this.delete(restaurante.ID)};}} className="btn" >Borrar</button> </td>
-
+                <td> <Link to={`/edit/${restaurante.ID}`}> Editar </Link></td>
               </tr>)}
               </tbody>
               </table>
@@ -62,6 +65,8 @@ class restaurant extends Component {
         </section>
         <p></p>
         <Link to="/add">Crear restaurante</Link>
+      </div>
+      </div>
       </div>
     );
   }
