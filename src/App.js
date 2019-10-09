@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Coupon from './components/Coupon';
+import CouponFetcher from './components/CouponFetcher';
 import { Menu } from 'semantic-ui-react';
 
 function App() {
@@ -9,15 +9,7 @@ function App() {
       <Menu secondary={true} pointing={true}>
         <p>Shake it!</p>
       </Menu>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Get a promo code
-      </a>
-      <Coupon />
+      <CouponFetcher></CouponFetcher>
       <br></br>
     </div>
   );
