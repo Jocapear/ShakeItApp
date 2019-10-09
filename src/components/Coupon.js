@@ -14,14 +14,16 @@ const Coupon = ({ firebaseCoupon }) => {
       ></img>
       <h2 className="ui center aligned header">{firebaseCoupon.restaurant}</h2>
       <h2 className="ui center aligned header">{firebaseCoupon.description}</h2>
-      <div class="ui two column centered grid">
-        <div class="column"><StoreMap
-          latitude={firebaseCoupon.latitude}
-          longitude={firebaseCoupon.longitude}
-        ></StoreMap></div>
-        <div class="four column centered row">
-          <div class="column"></div>
-          <div class="column"></div>
+      <div className="ui two column centered grid">
+        <div className="column">
+          <StoreMap
+            latitude={firebaseCoupon.latitude}
+            longitude={firebaseCoupon.longitude}
+          ></StoreMap>
+        </div>
+        <div className="four column centered row">
+          <div className="column"></div>
+          <div className="column"></div>
         </div>
       </div>
     </div>

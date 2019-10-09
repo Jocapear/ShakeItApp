@@ -8,7 +8,7 @@ const CouponFetcher = () => {
         <div className="visible content">Shake it!</div>
         <div className="hidden content"> Get a promo</div>
       </div>
-      <div class="ui hidden divider"></div>
+      <div className="ui hidden divider"></div>
       <Coupon></Coupon>
     </div>
   );
