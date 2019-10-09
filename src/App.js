@@ -1,14 +1,12 @@
 import React from 'react';
-import Login from './components/Login';
 import './App.css';
+import Coupon from './components/Coupon';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Shake it!
-        </p>
+        <p>Shake it!</p>
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -17,7 +15,8 @@ function App() {
         >
           Get a promo code
         </a>
-        <Login />
+        <Coupon />
+        <br></br>
       </header>
     </div>
   );
