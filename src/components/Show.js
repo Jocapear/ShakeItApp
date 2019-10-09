@@ -33,9 +33,19 @@ class Show extends Component{
 
   }
 
+  delete(id){
+    firebase.database().ref().child('/Restaurantes/' + this.props.match.params.id + '/Sucursales/' + id).remove().then(() => {
+      console.log("Sucursal borrada!");
+      //this.props.history.push("/")
+    }).catch((error) => {
+      console.error("Error removing coupon: ", error);
+    });
+  }
+
 
 
   render(){
+    this.delete = this.delete.bind(this);
     const {sucursales} = this.state;
     return(
       <div>
@@ -46,11 +56,24 @@ class Show extends Component{
             <div>
               <h1>{this.state.nombre}</h1>
               <h2>Sucursales:</h2>
-              {sucursales.map(sucursal =>
-                <div className="card float-left" key={sucursal.ID}>
-                <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link>
-                </div>
-              )}
+              <table>
+                <thead>
+                  <tr>
+                    <th> Sucursal </th>
+                    <th> Borrar </th>
+                    <th> Editar </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {sucursales.map(sucursal =>
+                      <tr key={sucursal.ID}>
+                      <td> <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link> </td>
+                      <td> <button onClick= {() => {if(window.confirm('¿Quiéres borrar esta sucursal?')){this.delete(sucursal.ID)};}} className="btn" >Borrar</button> </td>
+
+                      </tr>
+                    )}
+              </tbody>
+              </table>
               </div>
             </section>
             <p></p>

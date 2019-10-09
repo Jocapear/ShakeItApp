@@ -24,21 +24,43 @@ class restaurant extends Component {
 
   }
 
-
+  delete(id){
+    firebase.database().ref().child('/Restaurantes/' + id).remove().then(() => {
+      console.log("Restaurante borrado!");
+      //this.props.history.push("/")
+    }).catch((error) => {
+      console.error("Error removing coupon: ", error);
+    });
+  }
 
   render(){
+    this.delete = this.delete.bind(this);
     const {restaurantes} = this.state;
     return(
       <div className = 'App-header'>
         <section id="restaurantes">
         <div>
           <h1>Restaurantes</h1>
-          <h3>{restaurantes.map(restaurante =>
-              <div className="card float-left" key={restaurante.ID}>
-                <Link to={`/show/${restaurante.ID}`}> {restaurante.Nombre}</Link>
-              </div>)}</h3>
+          <table>
+            <thead>
+              <tr>
+                <th> Restaurant </th>
+                <th> Borrar </th>
+                <th> Editar </th>
+              </tr>
+            </thead>
+            <tbody>
+          {restaurantes.map(restaurante =>
+              <tr key={restaurante.ID}>
+                <td><Link to={`/show/${restaurante.ID}`}> {restaurante.Nombre}</Link></td>
+                <td> <button onClick= {() => {if(window.confirm('¿Quiéres borrar esta sucursal?')){this.delete(restaurante.ID)};}} className="btn" >Borrar</button> </td>
+
+              </tr>)}
+              </tbody>
+              </table>
         </div>
         </section>
+        <p></p>
         <Link to="/add">Crear restaurante</Link>
       </div>
     );
