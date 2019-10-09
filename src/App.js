@@ -1,23 +1,24 @@
 import React from 'react';
 import './App.css';
 import Coupon from './components/Coupon';
+import { Menu } from 'semantic-ui-react';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <Menu secondary={true} pointing={true}>
         <p>Shake it!</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Get a promo code
-        </a>
-        <Coupon />
-        <br></br>
-      </header>
+      </Menu>
+      <a
+        className="App-link"
+        href="https://reactjs.org"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Get a promo code
+      </a>
+      <Coupon />
+      <br></br>
     </div>
   );
 }
