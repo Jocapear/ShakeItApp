@@ -32,7 +32,7 @@ const Join = ({ history }) => {
           .createUserWithEmailAndPassword(email, password)
           .then(res => {
             console.log(res);
-            history.push('/shake');
+            history.push('/register');
             if (res.user) {
               Auth.setLoggedIn(true);
               Auth.setUser(res.user);
@@ -55,7 +55,7 @@ const Join = ({ history }) => {
           .auth()
           .signInWithPopup(provider)
           .then(res => {
-            history.push('/shake');
+            history.push('/register');
             Auth.setLoggedIn(true);
             Auth.setUser(res.user);
           })
