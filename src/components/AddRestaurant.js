@@ -23,10 +23,10 @@ class AddRestaurant extends Component{
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { Nombre} = this.state.Nombre;
-    var newChildRef = this.ref.push({Nombre: Nombre});
+    var newChildRef = this.ref.push();
     this.ref.child(newChildRef.key).update({
       ID: newChildRef.key,
+      Nombre: this.state.Nombre
     }).then((couponRef) => {
       this.setState({
         Nombre: ''

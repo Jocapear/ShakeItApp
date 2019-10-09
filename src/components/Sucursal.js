@@ -80,16 +80,17 @@ class Show extends Component{
                 <th> Cantidad </th>
                 <th> Usar </th>
                 <th> Borrar </th>
+                <th> Editar </th>
               </tr>
             </thead>
             <tbody>
             {cupones.map(cupon =>
-
                 <tr key={cupon.ID}>
                   <td>{cupon.Promo}</td>
                   <td>{cupon.Cantidad}</td>
                   <td> <button onClick={this.use.bind(this, cupon.ID, cupon.Cantidad)} className="btn">Usar</button> </td>
                   <td> <button onClick= {() => {if(window.confirm('Do you want to delete this coupon?')){this.delete(cupon.ID)};}} className="btn" >Borrar</button> </td>
+                  <td> <Link to={`/edit/${this.props.match.params.res}/${this.props.match.params.id}/${cupon.ID}`}> Editar </Link></td>
                 </tr>
 
             )}

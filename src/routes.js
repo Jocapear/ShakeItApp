@@ -6,6 +6,7 @@ import Sucursal from './components/Sucursal';
 import AddCoupon from './components/AddCoupon';
 import AddSucursal from './components/AddSucursal';
 import AddRestaurant from './components/AddRestaurant';
+import EditCoupon from './components/EditCoupon';
 
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
   { name: 'AddCoupon', path: '/add/:res/:id', exact: false, main: AddCoupon },
   { name: 'AddSucursal', path: '/add/:res', exact: false, main: AddSucursal },
   { name: 'AddRestaurant', path: '/add', exact: true, main: AddRestaurant },
+  { name: 'EditCoupon', path: '/edit/:res/:suc/:id', exact: false, main: EditCoupon },
 ];
 
 export default routes;
