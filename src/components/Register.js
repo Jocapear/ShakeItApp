@@ -24,9 +24,8 @@ class Register extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    firebase.auth().currentUser
-    this.ref.child(firebase.auth().currentUser).update({
-      ID: firebase.auth().currentUser,
+    this.ref.child(firebase.auth().currentUser.uid).update({
+      ID: firebase.auth().currentUser.uid,
       Type: this.state.Type
     }).then((couponRef) => {
       this.setState({
@@ -47,12 +46,12 @@ class Register extends Component {
         <form onSubmit={this.onSubmit}>
         <div className="form-group">
              <label htmlFor="Nombre">Nombre:</label>
-             <input list="types" name="Type" onChange={this.onChange} placeholder="Type" defaultValue={Type}>
+             <input list="types" name="Type" onChange={this.onChange} placeholder="Type" defaultValue={Type}/>
              <datalist id="types">
-              <option value="Restaurante">
-              <option value="Cliente">
+              <option value="Restaurante" />
+              <option value="Cliente" />
              </datalist>
-             <input type="submit">
+             <input type="submit" />
            </div>
         </form>
       </div>
