@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
+import Header from './components/Header';
+import StoreMap from './components/StoreMap';
 import Coupon from './components/Coupon';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <Header />
         <p>Shake it!</p>
         <a
           className="App-link"
@@ -15,6 +18,7 @@ function App() {
         >
           Get a promo code
         </a>
+        <StoreMap />
         <Coupon />
         <br></br>
       </header>
