@@ -51,3 +51,7 @@ a:link {
 a:visited {
   color: green;
 }
+
+.center {
+    margin: auto !important;
+}
