@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { object } from 'prop-types';
+import React from 'react';
 import firebase from 'firebase';
 import { withRouter, Link, Redirect } from 'react-router-dom';
-import '../App.css';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../../AuthContext';
+import useLoginState from './loginState';
 
 const Login = ({ history }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setErrors] = useState('');
+  const [state, actions] = useLoginState();
   const Auth = useAuth();
 
   if (Auth.isLoadingAuth) {
@@ -19,7 +16,7 @@ const Login = ({ history }) => {
     return <Redirect to={{ pathname: '/shake' }} />;
   }
 
-  const handleForm = e => {
+  const login = e => {
     e.preventDefault();
     firebase
       .auth()
@@ -27,7 +24,7 @@ const Login = ({ history }) => {
       .then(() => {
         firebase
           .auth()
-          .signInWithEmailAndPassword(email, password)
+          .signInWithEmailAndPassword(state.email, state.password)
           .then(res => {
             if (res.user) {
               Auth.setLoggedIn(true);
@@ -35,8 +32,8 @@ const Login = ({ history }) => {
             }
             history.push('/shake');
           })
-          .catch(e => {
-            setErrors(e.message);
+          .catch(({ message }) => {
+            actions.setError(message);
           });
       });
   };
@@ -55,7 +52,9 @@ const Login = ({ history }) => {
             Auth.setLoggedIn(true);
             Auth.setUser(res.user);
           })
-          .catch(e => setErrors(e.message));
+          .catch(({ message }) => {
+            actions.setError(message);
+          });
       });
   };
 
@@ -63,24 +62,28 @@ const Login = ({ history }) => {
     <div className="App">
       <header className="App-header">
         <h1>Login</h1>
-        <form onSubmit={e => handleForm(e)}>
+        <form onSubmit={e => login(e)}>
           <input
-            value={email}
-            onChange={e => setEmail(e.target.value)}
             name="email"
             type="email"
             placeholder="email"
+            value={state.email}
+            onChange={({ target }) => {
+              actions.setEmail(target.value);
+            }}
           />
           <input
-            onChange={e => setPassword(e.target.value)}
             name="password"
-            value={password}
             type="password"
             placeholder="password"
+            value={state.password}
+            onChange={({ target }) => {
+              actions.setPassword(target.value);
+            }}
           />
           <hr />
           <button
-            onClick={() => signInWithGoogle()}
+            onClick={signInWithGoogle}
             className="googleBtn"
             type="button"
           >
@@ -93,15 +96,11 @@ const Login = ({ history }) => {
           <button type="submit">Login</button>
           <p>Don't have an account?</p>
           <Link to="/">Join here.</Link>
-          <span>{error}</span>
+          <span>{state.error}</span>
         </form>
       </header>
     </div>
   );
-};
-
-Login.propTypes = {
-  history: object,
 };
 
 export default withRouter(Login);
