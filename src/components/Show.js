@@ -69,7 +69,7 @@ class Show extends Component{
                       <tr key={sucursal.ID}>
                       <td> <Link to={`/sucursal/${this.state.key}/${sucursal.ID}`}>{sucursal.Nombre}</Link> </td>
                       <td> <button onClick= {() => {if(window.confirm('¿Quiéres borrar esta sucursal?')){this.delete(sucursal.ID)};}} className="btn" >Borrar</button> </td>
-
+                      <td> <Link to={`/edit/${this.props.match.params.id}/${sucursal.ID}`}> Editar </Link></td>
                       </tr>
                     )}
               </tbody>

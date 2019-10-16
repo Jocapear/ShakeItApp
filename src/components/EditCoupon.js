@@ -4,6 +4,7 @@ import firebase from 'firebase';
 class EditCoupon extends Component{
   constructor (props){
     super(props);
+    this.ref = firebase.database().ref().child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/' + this.props.match.params.suc + '/Cupones/' + this.props.match.params.id);
     this.state = {
       Cantidad: '',
       Promo: ''
@@ -11,8 +12,19 @@ class EditCoupon extends Component{
   }
 
   componentDidMount(){
-    const ref = firebase.database().ref().child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/' + this.props.match.params.suc + '/Cupones/');
+    const ref = firebase.database().ref().child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/' + this.props.match.params.suc + '/Cupones/' + this.props.match.params.id + '/Cantidad/');
+    ref.on('value', snapshot => {
+      this.setState({
+        Cantidad: snapshot.val()
+      });
+    });
 
+    const ref2 = firebase.database().ref().child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/' + this.props.match.params.suc + '/Cupones/' + this.props.match.params.id + '/Promo/');
+    ref2.on('value', snapshot => {
+      this.setState({
+        Promo: snapshot.val()
+      });
+    });
   }
 
   onChange = (e) =>  {
@@ -22,25 +34,15 @@ class EditCoupon extends Component{
     this.setState({
       [name]: value
     });
-    this.ref.update({
-      Cantidad: this.state.Cantidad,
-      Promo: this.ref.Promo
-    });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    const path = '/sucursal/' + this.props.match.params.res + '/' + this.props.match.params.id + '/';
-    const { Cantidad, Promo} = this.state;
-    var newChildRef = this.ref.push({Cantidad: Cantidad});
-    this.ref.child(newChildRef.key).update({
-      ID: newChildRef.key,
-      Promo: Promo
+    const path = '/sucursal/' + this.props.match.params.res + '/' + this.props.match.params.suc + '/';
+    this.ref.update({
+      Cantidad: this.state.Cantidad,
+      Promo: this.state.Promo
     }).then((couponRef) => {
-      this.setState({
-        Cantidad: '',
-        Promo: ''
-      });
       this.props.history.push(path);
     })
     .catch((error) => {
@@ -50,9 +52,6 @@ class EditCoupon extends Component{
   }
 
   render(){
-    const {Cantidad, Promo} = this.state;
-    console.log(this.ref.child(this.props.match.params.id).Cantidad);
-
     return(
       <div className="App-header">
         <form onSubmit={this.onSubmit}>
@@ -62,7 +61,7 @@ class EditCoupon extends Component{
            </div>
            <div className="form-group">
              <label htmlFor="Cantidad">Cantidad:</label>
-             <input type="number" className="form-control" name="Cantidad" onChange={this.onChange} defaultValue={Cantidad} />
+             <input type="number" className="form-control" name="Cantidad" onChange={this.onChange} defaultValue={this.state.Cantidad} />
            </div>
            <button type="submit" className="btn-success">Submit</button>
         </form>
