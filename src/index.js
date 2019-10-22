@@ -8,7 +8,6 @@ import protectedRoutes from './protectedRoutes';
 import firebase from 'firebase';
 import 'firebase/auth';
 import firebaseConfig from './firebaseConfig';
-import Firebase, { FirebaseContext } from './components/Firebase'
 
 import ProtectedRouteHoc from './ProtectedRouteHoc';
 import { AuthContextProvider } from './AuthContext';
@@ -68,6 +67,4 @@ function App() {
 }
 
 const rootElement = document.getElementById('root');
-ReactDOM.render(<FirebaseContext.Provider value={new Firebase()}>
-    <App />
-  </FirebaseContext.Provider>, rootElement);
+ReactDOM.render(<App />, rootElement);
