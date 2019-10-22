@@ -32,6 +32,9 @@ const RestaurantTableBody = ({ restaurants, removeRestaurant }) => (
             Borrar
           </Button>
         </Table.Cell>
+        <Table.Cell>
+          <Link to={`/edit/${res.ID}`}>Editar</Link>
+        </Table.Cell>
       </Table.Row>
     ))}
   </Table.Body>

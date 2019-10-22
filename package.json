@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^4.8.0",
+    "@react-firebase/database": "^0.3.10",
+    "firebase": "^7.2.1",
     "leaflet": "^1.5.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

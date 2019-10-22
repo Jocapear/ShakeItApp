@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 
-class EditCoupon extends Component {
+class EditSucursal extends Component {
   constructor(props) {
     super(props);
     this.ref = firebase
@@ -11,17 +11,32 @@ class EditCoupon extends Component {
         '/Restaurantes/' +
           this.props.match.params.res +
           '/Sucursales/' +
-          this.props.match.params.suc +
-          '/Cupones/' +
-          this.props.match.params.id
+          this.props.match.params.suc
       );
     this.state = {
-      Cantidad: '',
-      Promo: '',
+      Nombre: '',
+      Latitud: '',
+      Longitud: '',
     };
   }
 
   componentDidMount() {
+    const ref1 = firebase
+      .database()
+      .ref()
+      .child(
+        '/Restaurantes/' +
+          this.props.match.params.res +
+          '/Sucursales/' +
+          this.props.match.params.suc +
+          '/Nombre/'
+      );
+    ref1.on('value', snapshot => {
+      this.setState({
+        Nombre: snapshot.val(),
+      });
+    });
+
     const ref = firebase
       .database()
       .ref()
@@ -30,13 +45,11 @@ class EditCoupon extends Component {
           this.props.match.params.res +
           '/Sucursales/' +
           this.props.match.params.suc +
-          '/Cupones/' +
-          this.props.match.params.id +
-          '/Cantidad/'
+          '/Latitud/'
       );
     ref.on('value', snapshot => {
       this.setState({
-        Cantidad: snapshot.val(),
+        Latitud: snapshot.val(),
       });
     });
 
@@ -48,13 +61,11 @@ class EditCoupon extends Component {
           this.props.match.params.res +
           '/Sucursales/' +
           this.props.match.params.suc +
-          '/Cupones/' +
-          this.props.match.params.id +
-          '/Promo/'
+          '/Longitud/'
       );
     ref2.on('value', snapshot => {
       this.setState({
-        Promo: snapshot.val(),
+        Longitud: snapshot.val(),
       });
     });
   }
@@ -70,18 +81,14 @@ class EditCoupon extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const path =
-      '/sucursal/' +
-      this.props.match.params.res +
-      '/' +
-      this.props.match.params.suc +
-      '/';
+    const path = '/show/' + this.props.match.params.res + '/';
     this.ref
       .update({
-        Cantidad: this.state.Cantidad,
-        Promo: this.state.Promo,
+        Nombre: this.state.Nombre,
+        Latitud: this.state.Latitud,
+        Longitud: this.state.Longitud,
       })
-      .then(() => {
+      .then(couponRef => {
         this.props.history.push(path);
       })
       .catch(error => {
@@ -94,25 +101,34 @@ class EditCoupon extends Component {
       <div className="App-header">
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label htmlFor="Promo">Promoción:</label>
-            <textarea
+            <label htmlFor="Nombre">Nombre:</label>
+            <input
+              type="text"
               className="form-control"
-              name="Promo"
+              name="Nombre"
               onChange={this.onChange}
-              placeholder="Promo"
-              cols="40"
-              rows="2"
-              value={this.state.Promo}
+              placeholder="Nombre"
+              value={this.state.Nombre}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="Cantidad">Cantidad:</label>
+            <label htmlFor="Latitud">Latitud:</label>
             <input
               type="number"
               className="form-control"
-              name="Cantidad"
+              name="Latitud"
               onChange={this.onChange}
-              defaultValue={this.state.Cantidad}
+              value={this.state.Latitud}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="Longitud">Longitud:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="Longitud"
+              onChange={this.onChange}
+              value={this.state.Longitud}
             />
           </div>
           <button type="submit" className="btn-success">
@@ -124,4 +140,4 @@ class EditCoupon extends Component {
   }
 }
 
-export default EditCoupon;
+export default EditSucursal;

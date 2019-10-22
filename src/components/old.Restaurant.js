@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 
-class Show extends Component {
+class restaurant extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sucursales: [],
-      key: this.props.match.params.id,
-      nombre: '',
+      restaurantes: [],
     };
   }
 
@@ -16,24 +14,14 @@ class Show extends Component {
     const restRef = firebase
       .database()
       .ref()
-      .child('/Restaurantes/' + this.props.match.params.id + '/Nombre/');
+      .child('/Restaurantes/');
     restRef.on('value', snapshot => {
-      this.setState({
-        nombre: snapshot.val(),
-      });
-    });
-
-    const ref = firebase
-      .database()
-      .ref()
-      .child('/Restaurantes/' + this.props.match.params.id + '/Sucursales/');
-    ref.on('value', snapshot => {
       var newState = [];
       snapshot.forEach(function(child) {
         newState.push(child.val());
       });
       this.setState({
-        sucursales: newState,
+        restaurantes: newState,
       });
     });
   }
@@ -42,12 +30,10 @@ class Show extends Component {
     firebase
       .database()
       .ref()
-      .child(
-        '/Restaurantes/' + this.props.match.params.id + '/Sucursales/' + id
-      )
+      .child('/Restaurantes/' + id)
       .remove()
       .then(() => {
-        console.log('Sucursal borrada!');
+        console.log('Restaurante borrado!');
         //this.props.history.push("/")
       })
       .catch(error => {
@@ -57,34 +43,31 @@ class Show extends Component {
 
   render() {
     this.delete = this.delete.bind(this);
-    const { sucursales } = this.state;
+    const { restaurantes } = this.state;
     return (
       <div>
         <div className="Back-link">
-          <Link to="/restaurant">Regresar</Link>
+          <Link to="/shake">Regresar</Link>
           <div className="App-header">
-            <section id="sucursales">
+            <section id="restaurantes">
               <div>
-                <h1>{this.state.nombre}</h1>
-                <h2>Sucursales:</h2>
+                <h1>Restaurantes</h1>
                 <table>
                   <thead>
                     <tr>
-                      <th> Sucursal </th>
+                      <th> Restaurant </th>
                       <th> Borrar </th>
                       <th> Editar </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {sucursales.map(sucursal => (
-                      <tr key={sucursal.ID}>
+                    {restaurantes.map(restaurante => (
+                      <tr key={restaurante.ID}>
                         <td>
-                          {' '}
-                          <Link
-                            to={`/sucursal/${this.state.key}/${sucursal.ID}`}
-                          >
-                            {sucursal.Nombre}
-                          </Link>{' '}
+                          <Link to={`/show/${restaurante.ID}`}>
+                            {' '}
+                            {restaurante.Nombre}
+                          </Link>
                         </td>
                         <td>
                           {' '}
@@ -93,7 +76,7 @@ class Show extends Component {
                               if (
                                 window.confirm('¿Quiéres borrar esta sucursal?')
                               ) {
-                                this.delete(sucursal.ID);
+                                this.delete(restaurante.ID);
                               }
                             }}
                             className="btn"
@@ -103,12 +86,7 @@ class Show extends Component {
                         </td>
                         <td>
                           {' '}
-                          <Link
-                            to={`/edit/${this.props.match.params.id}/${sucursal.ID}`}
-                          >
-                            {' '}
-                            Editar{' '}
-                          </Link>
+                          <Link to={`/edit/${restaurante.ID}`}> Editar </Link>
                         </td>
                       </tr>
                     ))}
@@ -117,7 +95,7 @@ class Show extends Component {
               </div>
             </section>
             <p></p>
-            <Link to={`/add/${this.state.key}`}>Crear Sucursal</Link>
+            <Link to="/add">Crear restaurante</Link>
           </div>
         </div>
       </div>
@@ -125,4 +103,4 @@ class Show extends Component {
   }
 }
 
-export default Show;
+export default restaurant;

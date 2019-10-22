@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { object } from 'prop-types';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from 'firebase';
 import { withRouter, Link, Redirect } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
 import '../App.css';
+import { useAuth } from '../AuthContext';
 
-const Join = ({ history }) => {
+const Login = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setErrors] = useState('');
@@ -17,26 +16,54 @@ const Join = ({ history }) => {
   }
 
   if (Auth.isLoggedIn) {
+    const ref = firebase
+      .database()
+      .ref()
+      .child('/Users/' + Auth.user.uid);
+    const geoError = function(error) {
+      console.log(error.code);
+    };
+    const geoSuccess = function(pos) {
+      const crd = pos.coords;
+      ref
+        .child('Metadata')
+        .update({
+          last_latitude: crd.latitude,
+          last_longitude: crd.longitude,
+        })
+        .catch(error => {
+          console.error('Error adding location metadata', error);
+        });
+    };
+    navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+
+    ref.push({ last_login: new Date() });
+    ref
+      .child('Metadata')
+      .update({
+        last_login: new Date(),
+      })
+      .catch(error => {
+        console.error('Error adding time metadata', error);
+      });
     return <Redirect to={{ pathname: '/shake' }} />;
   }
 
   const handleForm = e => {
     e.preventDefault();
-
     firebase
       .auth()
       .setPersistence(firebase.auth.Auth.Persistence.SESSION)
       .then(() => {
         firebase
           .auth()
-          .createUserWithEmailAndPassword(email, password)
+          .signInWithEmailAndPassword(email, password)
           .then(res => {
-            console.log(res);
-            history.push('/register');
             if (res.user) {
               Auth.setLoggedIn(true);
               Auth.setUser(res.user);
             }
+            history.push('/shake');
           })
           .catch(e => {
             setErrors(e.message);
@@ -44,9 +71,8 @@ const Join = ({ history }) => {
       });
   };
 
-  const handleGoogleLogin = () => {
+  const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-
     firebase
       .auth()
       .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -55,7 +81,7 @@ const Join = ({ history }) => {
           .auth()
           .signInWithPopup(provider)
           .then(res => {
-            history.push('/register');
+            history.push('/shake');
             Auth.setLoggedIn(true);
             Auth.setUser(res.user);
           })
@@ -66,7 +92,7 @@ const Join = ({ history }) => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Join</h1>
+        <h1>Login</h1>
         <form onSubmit={e => handleForm(e)}>
           <input
             value={email}
@@ -84,7 +110,7 @@ const Join = ({ history }) => {
           />
           <hr />
           <button
-            onClick={() => handleGoogleLogin()}
+            onClick={() => signInWithGoogle()}
             className="googleBtn"
             type="button"
           >
@@ -92,13 +118,11 @@ const Join = ({ history }) => {
               src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
               alt="logo"
             />
-            Join With Google
+            Login With Google
           </button>
-
-          <button type="submit">Sign up</button>
-          <p>Already have an account?</p>
-          <Link to="/">Log in here.</Link>
-
+          <button type="submit">Login</button>
+          <p>Don't have an account?</p>
+          <Link to="/join">Join here.</Link>
           <span>{error}</span>
         </form>
       </header>
@@ -106,8 +130,8 @@ const Join = ({ history }) => {
   );
 };
 
-Join.propTypes = {
+Login.propTypes = {
   history: object,
 };
 
-export default withRouter(Join);
+export default withRouter(Login);
