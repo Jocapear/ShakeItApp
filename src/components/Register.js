@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import 'firebase/auth';
 
-class AddRestaurant extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.ref = firebase
       .database()
       .ref()
-      .child('/Restaurantes/');
+      .child('/Users/');
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
-      Nombre: '',
+      Type: '',
     };
   }
 
@@ -26,48 +27,47 @@ class AddRestaurant extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    var newChildRef = this.ref.push();
     this.ref
-      .child(newChildRef.key)
+      .child(firebase.auth().currentUser.uid)
       .update({
-        ID: newChildRef.key,
-        Nombre: this.state.Nombre,
+        ID: firebase.auth().currentUser.uid,
+        Type: this.state.Type,
       })
       .then(couponRef => {
         this.setState({
-          Nombre: '',
+          Type: '',
         });
-        this.props.history.push('/restaurant');
+        this.props.history.push('/shake');
       })
       .catch(error => {
-        console.error('Error adding restaurant', error);
+        console.error('Error adding user', error);
       });
   };
 
   render() {
-    const { Nombre } = this.state.Nombre;
+    const { Type } = this.state.Type;
     return (
       <div className="App-header">
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="Nombre">Nombre:</label>
-            <textarea
-              className="form-control"
-              name="Nombre"
+            <input
+              list="types"
+              name="Type"
               onChange={this.onChange}
-              placeholder="Nombre"
-              cols="40"
-              rows="2"
-              defaultValue={Nombre}
+              placeholder="Type"
+              defaultValue={Type}
             />
+            <datalist id="types">
+              <option value="Restaurante" />
+              <option value="Cliente" />
+            </datalist>
+            <input type="submit" />
           </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
         </form>
       </div>
     );
   }
 }
 
-export default AddRestaurant;
+export default Register;

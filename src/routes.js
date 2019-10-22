@@ -10,6 +10,7 @@ import EditCoupon from './components/EditCoupon';
 import EditSucursal from './components/EditSucursal';
 import EditRestaurante from './components/EditRestaurante';
 import Coupon from './components/Coupon';
+import Register from './components/Register';
 
 const routes = [
   { name: 'Root', path: '/', exact: true, main: Login },
@@ -17,14 +18,35 @@ const routes = [
   { name: 'Login', path: '/login', exact: true, main: Login },
   { name: 'Restaurants', path: '/restaurant', exact: true, main: Restaurant },
   { name: 'Show', path: '/show/:id', exact: false, main: Show },
-  { name: 'Sucursal', path: '/sucursal/:res/:id', exact: false, main: Sucursal },
+  {
+    name: 'Sucursal',
+    path: '/sucursal/:res/:id',
+    exact: false,
+    main: Sucursal,
+  },
   { name: 'AddCoupon', path: '/add/:res/:id', exact: false, main: AddCoupon },
   { name: 'AddSucursal', path: '/add/:res', exact: false, main: AddSucursal },
   { name: 'AddRestaurant', path: '/add', exact: true, main: AddRestaurant },
-  { name: 'EditCoupon', path: '/edit/:res/:suc/:id', exact: false, main: EditCoupon },
-  { name: 'EditSucursal', path: '/edit/:res/:suc', exact: false, main: EditSucursal },
-  { name: 'EditRestaurante', path: '/edit/:res', exact: false, main: EditRestaurante },
+  {
+    name: 'EditCoupon',
+    path: '/edit/:res/:suc/:id',
+    exact: false,
+    main: EditCoupon,
+  },
+  {
+    name: 'EditSucursal',
+    path: '/edit/:res/:suc',
+    exact: false,
+    main: EditSucursal,
+  },
+  {
+    name: 'EditRestaurante',
+    path: '/edit/:res',
+    exact: false,
+    main: EditRestaurante,
+  },
   { name: 'Coupon', path: '/coupon', exact: true, main: Coupon },
+  { name: 'Register', path: '/register', exact: true, main: Register },
 ];
 
 export default routes;
