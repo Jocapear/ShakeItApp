@@ -23,11 +23,6 @@
     "lint:fix": "eslint --fix './src/**/*.{js,jsx}'",
     "eject": "react-scripts eject"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint:fix"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
