@@ -92,7 +92,7 @@ const Login = ({ history }) => {
           </button>
           <button type="submit">Login</button>
           <p>Don't have an account?</p>
-          <Link to="/join">Join here.</Link>
+          <Link to="/">Join here.</Link>
           <span>{error}</span>
         </form>
       </header>
