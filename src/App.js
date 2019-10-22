@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
 import Coupon from './components/Coupon';
 
 function App() {
+  const[hasCoupon,setHasCoupon] = useState(false)
   return (
     <div className="App">
       <header className="App-header">
+        <Header />
         <p>Shake it!</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Get a promo code
-        </a>
-        <Coupon />
+        
+        {hasCoupon ? <Coupon /> : (
+          <button onClick={()=>{
+            setHasCoupon(true)
+          }}>
+            Get a promo code
+          </button>
+        )}
         <br></br>
       </header>
     </div>
