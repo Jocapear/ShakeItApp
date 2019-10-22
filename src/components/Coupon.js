@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { string, number, object } from 'prop-types';
 import StoreMap from './StoreMap';
 import firebase from 'firebase';
+import QRCode from 'qrcode'
 
 class Coupon extends Component {
   constructor(){
@@ -19,8 +20,10 @@ class Coupon extends Component {
   }
 
   render(){
-    setTimeout(function(){
-      
+    if(this.state.couponData == null){
+      return null
+    }
+
       return (
         <div>
         <h1>{this.state.couponData.code}</h1>
@@ -30,8 +33,8 @@ class Coupon extends Component {
           width="300"
           height="300"
         ></img>
-        <h2>{this.state.couponData.restaurant}</h2>
-        <h2>{this.state.couponData.branch}</h2>
+        <h2>{this.state.couponData.restaurant.Nombre}</h2>
+        <h2>{this.state.couponData.branch.Nombre}</h2>
         <h2>{this.state.couponData.description}</h2>
         <StoreMap
           latitude={this.state.couponData.latitude}
@@ -39,15 +42,13 @@ class Coupon extends Component {
         ></StoreMap>
       </div>
       );
-    }, 4000)
-    return null
   };
 
-  getCoupon = async ()=>{
-    return new Promise(async (resolve, reject)=>{
+  getCoupon = () => {
+    return new Promise((resolve, reject)=> {
       var coupons = [];
-    var restaurants = await firebase.database().ref().child('/Restaurantes/');
-    await restaurants.once("value", function(snapshot) {
+    var restaurants = firebase.database().ref().child('/Restaurantes/');
+    restaurants.once("value", function(snapshot) {
       snapshot.forEach( function(restaurant) {
         var singleRestaurant =  firebase.database().ref().child('/Restaurantes/' + restaurant.key + '/Sucursales/')
         singleRestaurant.once("value", function(snapshot) {
@@ -68,8 +69,13 @@ class Coupon extends Component {
         })
       });
     });
-    var randomCoupon = coupons[Math.floor(Math.random()*coupons.length)];
-    resolve(randomCoupon);
+      setTimeout(() => {
+        console.log(coupons)
+        console.log(coupons[0])
+        var randomCoupon = coupons[Math.floor(Math.random()*coupons.length)];
+        console.log(randomCoupon);
+        resolve(randomCoupon);
+      }, 500)
     })
     
   }
