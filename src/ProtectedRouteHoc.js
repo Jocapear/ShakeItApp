@@ -2,11 +2,12 @@ import React from 'react';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import { any, object } from 'prop-types';
 import { useAuth } from './AuthContext';
+import { Loader } from 'semantic-ui-react';
 
 const ProtectedRouteHoc = ({ component: Component, ...rest }) => {
   const Auth = useAuth();
   if (Auth.isLoadingAuth) {
-    return <p>Loading...</p>;
+    return <Loader size="massive" />;
   }
   if (Auth.isLoggedIn || rest.public) {
     return (
