@@ -66,12 +66,6 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.EDIT_SUCURSAL}>Editar sucursal</Link>
       </MenuItem>
     )}
-    {(authUser.Type.includes(ROLES.ADMIN) ||
-      authUser.Type.includes(ROLES.CLIENT)) && (
-      <MenuItem>
-        <Link to={ROUTES.COUPON}>Cupon</Link>
-      </MenuItem>
-    )}
   </Menu>
 );
 

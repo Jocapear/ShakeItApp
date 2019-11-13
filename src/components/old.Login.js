@@ -15,11 +15,8 @@ const Login = ({ history }) => {
     return <p>Loading...</p>;
   }
 
-  if (Auth.isLoggedIn) {
-    const ref = firebase
-      .database()
-      .ref()
-      .child('/Users/' + Auth.user.uid);
+  if (Auth.isLoggedIn && Auth.user) {
+    const ref = firebase.database().ref().child('/Users/' + Auth.user.uid);
     const geoError = function(error) {
       console.log(error.code);
     };

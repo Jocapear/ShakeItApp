@@ -1,15 +1,18 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import Coupon from './Coupon';
 
 const CouponFetcher = () => {
+  const[hasCoupon,setHasCoupon] = useState(false)
   return (
     <div>
-      <div className="massive ui olive animated fade button" tabIndex="0">
-        <div className="visible content">Shake it!</div>
-        <div className="hidden content"> Get a promo</div>
-      </div>
-      <div className="ui hidden divider"></div>
-      <Coupon></Coupon>
+      <p>Shake it!</p>
+      {hasCoupon ? <Coupon /> : (
+        <button onClick={()=>{
+          setHasCoupon(true)
+        }}>
+          Get a promo code
+        </button>
+      )}
     </div>
   );
 };
