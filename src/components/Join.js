@@ -4,7 +4,14 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import '../App.css';
+import {
+  Loader,
+  Container,
+  Header,
+  Form,
+  Icon,
+  Divider,
+} from 'semantic-ui-react';
 
 const Join = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -13,7 +20,7 @@ const Join = ({ history }) => {
   const Auth = useAuth();
 
   if (Auth.isLoadingAuth) {
-    return <p>Loading...</p>;
+    return <Loader size="massive" />;
   }
 
   if (Auth.isLoggedIn) {
@@ -64,45 +71,44 @@ const Join = ({ history }) => {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Join</h1>
-        <form onSubmit={e => handleForm(e)}>
-          <input
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            name="email"
-            type="email"
-            placeholder="email"
-          />
-          <input
-            onChange={e => setPassword(e.target.value)}
-            name="password"
-            value={password}
-            type="password"
-            placeholder="password"
-          />
-          <hr />
-          <button
-            onClick={() => handleGoogleLogin()}
-            className="googleBtn"
-            type="button"
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-              alt="logo"
-            />
-            Join With Google
-          </button>
+    <Container text>
+      <Header>Join</Header>
+      <Form onSubmit={e => handleForm(e)}>
+        <Form.Input
+          label="Email"
+          type="email"
+          placeholder="email"
+          required
+          fluid
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+        <Form.Input
+          label="Password"
+          type="password"
+          placeholder="password"
+          required
+          fluid
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <Form.Button type="submit">Sign up</Form.Button>
+        <span stype={{ color: 'red' }}>{error}</span>
 
-          <button type="submit">Sign up</button>
-          <p>Already have an account?</p>
-          <Link to="/">Log in here.</Link>
+        <Divider hidden />
 
-          <span>{error}</span>
-        </form>
-      </header>
-    </div>
+        <Form.Button onClick={handleGoogleLogin} color="blue">
+          <Icon name="google" />
+          Join With Google
+        </Form.Button>
+
+        <Divider horizontal>Or</Divider>
+        <p>
+          <strong>Already have an account?</strong>
+        </p>
+        <Link to="/">Log in here.</Link>
+      </Form>
+    </Container>
   );
 };
 
