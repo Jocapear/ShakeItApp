@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
+import { Container, Header, Table, Button } from 'semantic-ui-react';
 
-class restaurant extends Component {
+class Restaurant extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,8 +17,8 @@ class restaurant extends Component {
       .ref()
       .child('/Restaurantes/');
     restRef.on('value', snapshot => {
-      var newState = [];
-      snapshot.forEach(function(child) {
+      let newState = [];
+      snapshot.forEach(child => {
         newState.push(child.val());
       });
       this.setState({
@@ -26,7 +27,7 @@ class restaurant extends Component {
     });
   }
 
-  delete(id) {
+  delete = id => {
     firebase
       .database()
       .ref()
@@ -34,73 +35,74 @@ class restaurant extends Component {
       .remove()
       .then(() => {
         console.log('Restaurante borrado!');
-        //this.props.history.push("/")
       })
       .catch(error => {
         console.error('Error removing coupon: ', error);
       });
-  }
+  };
 
   render() {
-    this.delete = this.delete.bind(this);
     const { restaurantes } = this.state;
     return (
-      <div>
-        <div className="Back-link">
-          <Link to="/shake">Regresar</Link>
-          <div className="App-header">
-            <section id="restaurantes">
-              <div>
-                <h1>Restaurantes</h1>
-                <table>
-                  <thead>
-                    <tr>
-                      <th> Restaurant </th>
-                      <th> Borrar </th>
-                      <th> Editar </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {restaurantes.map(restaurante => (
-                      <tr key={restaurante.ID}>
-                        <td>
-                          <Link to={`/show/${restaurante.ID}`}>
-                            {' '}
-                            {restaurante.Nombre}
-                          </Link>
-                        </td>
-                        <td>
-                          {' '}
-                          <button
-                            onClick={() => {
-                              if (
-                                window.confirm('¿Quiéres borrar esta sucursal?')
-                              ) {
-                                this.delete(restaurante.ID);
-                              }
-                            }}
-                            className="btn"
-                          >
-                            Borrar
-                          </button>{' '}
-                        </td>
-                        <td>
-                          {' '}
-                          <Link to={`/edit/${restaurante.ID}`}> Editar </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-            <p></p>
-            <Link to="/add">Crear restaurante</Link>
+      <Container>
+        <section>
+          <div>
+            <Header size="huge">Restaurantes</Header>
+            <Table collapsing celled basic="very" size="large">
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Restaurant</Table.HeaderCell>
+                  <Table.HeaderCell>Borrar</Table.HeaderCell>
+                  <Table.HeaderCell>Editar</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {restaurantes.map(restaurante => (
+                  <Table.Row key={restaurante.ID}>
+                    <Table.Cell key={`link-${restaurante.ID}`}>
+                      <Link to={`/show/${restaurante.ID}`}>
+                        {restaurante.Nombre}
+                      </Link>
+                    </Table.Cell>
+                    <Table.Cell key={`delete-${restaurante.ID}`}>
+                      <Button
+                        onClick={() => {
+                          if (
+                            window.confirm('¿Quiéres borrar esta sucursal?')
+                          ) {
+                            this.delete(restaurante.ID);
+                          }
+                        }}
+                        className="btn"
+                      >
+                        Borrar
+                      </Button>
+                    </Table.Cell>
+                    <Table.Cell key={`delete-${restaurante.ID}`}>
+                      <Button
+                        onClick={() => {
+                          if (
+                            window.confirm('¿Quiéres borrar esta sucursal?')
+                          ) {
+                            this.delete(restaurante.ID);
+                          }
+                        }}
+                        className="btn"
+                      >
+                        Borrar
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
           </div>
-        </div>
-      </div>
+        </section>
+        <p></p>
+        <Link to="/add">Crear restaurante</Link>
+      </Container>
     );
   }
 }
 
-export default restaurant;
+export default Restaurant;

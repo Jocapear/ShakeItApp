@@ -38,7 +38,7 @@ class AddSucursal extends Component {
         Latitud: Latitud,
         Longitud: Longitud,
       })
-      .then(couponRef => {
+      .then(() => {
         this.setState({
           Latitud: '',
           Longitud: '',

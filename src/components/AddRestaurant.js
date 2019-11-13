@@ -33,7 +33,7 @@ class AddRestaurant extends Component {
         ID: newChildRef.key,
         Nombre: this.state.Nombre,
       })
-      .then(couponRef => {
+      .then(() => {
         this.setState({
           Nombre: '',
         });

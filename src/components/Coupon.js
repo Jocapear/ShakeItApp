@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { string, number, object } from 'prop-types';
 import StoreMap from './StoreMap';
 import firebase from 'firebase';
-import QRCode from 'qrcode'
 
 class Coupon extends Component {
   constructor(){
@@ -25,17 +24,43 @@ class Coupon extends Component {
     }
 
       return (
+        /*
         <div>
-        <h1>{this.state.couponData.code}</h1>
+        <h1 className="ui center aligned header">{firebaseCoupon.code}</h1>
         <img
           src="https://randomqr.com/assets/images/randomqr-256.png"
           alt="COULD NOT LOAD COUPON"
           width="300"
           height="300"
         ></img>
-        <h2>{this.state.couponData.restaurant.Nombre}</h2>
-        <h2>{this.state.couponData.branch.Nombre}</h2>
-        <h2>{this.state.couponData.description}</h2>
+        <h2 className="ui center aligned header">{firebaseCoupon.restaurant}</h2>
+        <h2 className="ui center aligned header">{firebaseCoupon.description}</h2>
+        <div className="ui two column centered grid">
+          <div className="column">
+            <StoreMap
+              latitude={firebaseCoupon.latitude}
+              longitude={firebaseCoupon.longitude}
+            ></StoreMap>
+          </div>
+          <div className="four column centered row">
+            <div className="column"></div>
+            <div className="column"></div>
+          </div>
+        </div>
+      </div>
+    );
+        */
+        <div>
+        <h1 className="ui center aligned header">{this.state.couponData.code}</h1>
+        <img
+          src="https://randomqr.com/assets/images/randomqr-256.png"
+          alt="COULD NOT LOAD COUPON"
+          width="300"
+          height="300"
+        ></img>
+        <h2 className="ui center aligned header">{this.state.couponData.restaurant.Nombre}</h2>
+        <h2 className="ui center aligned header">{this.state.couponData.branch.Nombre}</h2>
+        <h2 className="ui center aligned header">{this.state.couponData.description}</h2>
         <StoreMap
           latitude={this.state.couponData.latitude}
           longitude={this.state.couponData.longitude}

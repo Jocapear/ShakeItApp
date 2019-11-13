@@ -47,7 +47,7 @@ class AddCoupon extends Component {
         ID: newChildRef.key,
         Promo: Promo,
       })
-      .then(couponRef => {
+      .then(() => {
         this.setState({
           Cantidad: '',
           Promo: '',

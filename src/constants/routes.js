@@ -15,4 +15,3 @@ export const ADD_SUCURSAL = '/add/:res';
 export const EDIT_COUPON = '/edit/:res/:suc/:id';
 export const EDIT_SUCURSAL = '/edit/:res/:suc';
 // Client
-export const COUPON = '/coupon';
