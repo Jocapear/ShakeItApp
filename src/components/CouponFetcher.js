@@ -1,19 +1,19 @@
 import React,{ useState } from 'react';
 import Coupon from './Coupon';
+import { Button, Container } from 'semantic-ui-react'
 
 const CouponFetcher = () => {
   const[hasCoupon,setHasCoupon] = useState(false)
   return (
-    <div>
-      <p>Shake it!</p>
+    <Container>
       {hasCoupon ? <Coupon /> : (
-        <button onClick={()=>{
+        <Button positive compact size='massive' style={{width: 250, height: 100}} onClick={()=>{
           setHasCoupon(true)
         }}>
-          Get a promo code
-        </button>
+          Shake it!
+        </Button>
       )}
-    </div>
+    </Container>
   );
 };
 
