@@ -2,30 +2,29 @@ import React, { Component } from 'react';
 import { string, number, object } from 'prop-types';
 import StoreMap from './StoreMap';
 import firebase from 'firebase';
-import QRCode from 'qrcode'
+import QRCode from 'qrcode';
 
 class Coupon extends Component {
-  constructor(){
-    super()
-    this.state = { couponData:null }
-  }
-  
-
-  async componentDidMount(){
-    console.log(this.state)
-    const couponPromise = this.getCoupon()
-    const couponData = await couponPromise
-    this.setState({couponData})
-    console.log(this.state)
+  constructor() {
+    super();
+    this.state = { couponData: null };
   }
 
-  render(){
-    if(this.state.couponData == null){
-      return null
+  async componentDidMount() {
+    console.log(this.state);
+    const couponPromise = this.getCoupon();
+    const couponData = await couponPromise;
+    this.setState({ couponData });
+    console.log(this.state);
+  }
+
+  render() {
+    if (this.state.couponData == null) {
+      return null;
     }
 
-      return (
-        <div>
+    return (
+      <div>
         <h1>{this.state.couponData.code}</h1>
         <img
           src="https://randomqr.com/assets/images/randomqr-256.png"
@@ -41,63 +40,90 @@ class Coupon extends Component {
           longitude={this.state.couponData.longitude}
         ></StoreMap>
       </div>
-      );
-  };
-
-  getCoupon = () => {
-    return new Promise((resolve, reject)=> {
-      var coupons = [];
-    var restaurants = firebase.database().ref().child('/Restaurantes/');
-    restaurants.once("value", function(snapshot) {
-      snapshot.forEach( function(restaurant) {
-        var singleRestaurant =  firebase.database().ref().child('/Restaurantes/' + restaurant.key + '/Sucursales/')
-        singleRestaurant.once("value", function(snapshot) {
-          snapshot.forEach(function(branch) {
-            var singleSucursal = firebase.database().ref().child('/Restaurantes/'+restaurant.key + '/Sucursales/' + branch.key + '/Cupones/');
-            singleSucursal.once("value", function(snapshot){
-              snapshot.forEach(function(coupon) {
-                var path = '/Restaurantes/'+restaurant.key + '/Sucursales/' + branch.key + '/Cupones/' + coupon.key;
-                var restaurantData = restaurant.val();
-                var branchData = branch.val();
-                var couponData = coupon.val();
-                couponData.path = path
-                var finalCoupon = {code:coupon.key,restaurant:restaurantData,branch:branchData,description:couponData.Promo, latitude:branchData.Latitud, longitude:branchData.Longitud};
-                coupons.push(finalCoupon);
-              })
-            })
-          })
-        })
-      });
-    });
-      setTimeout(() => {
-        console.log(coupons)
-        console.log(coupons[0])
-        var randomCoupon = coupons[Math.floor(Math.random()*coupons.length)];
-        console.log(randomCoupon);
-        resolve(randomCoupon);
-      }, 500)
-    })
-    
+    );
   }
 
-static propTypes = {
-  firebaseCoupon: object,
-  code: string,
-  restaurant: string,
-  description: string,
-  latitude: number,
-  longitude: number,
-};
+  getCoupon = () => {
+    return new Promise((resolve, reject) => {
+      var coupons = [];
+      var restaurants = firebase
+        .database()
+        .ref()
+        .child('/Restaurantes/');
+      restaurants.once('value', function(snapshot) {
+        snapshot.forEach(function(restaurant) {
+          var singleRestaurant = firebase
+            .database()
+            .ref()
+            .child('/Restaurantes/' + restaurant.key + '/Sucursales/');
+          singleRestaurant.once('value', function(snapshot) {
+            snapshot.forEach(function(branch) {
+              var singleSucursal = firebase
+                .database()
+                .ref()
+                .child(
+                  '/Restaurantes/' +
+                    restaurant.key +
+                    '/Sucursales/' +
+                    branch.key +
+                    '/Cupones/'
+                );
+              singleSucursal.once('value', function(snapshot) {
+                snapshot.forEach(function(coupon) {
+                  var path =
+                    '/Restaurantes/' +
+                    restaurant.key +
+                    '/Sucursales/' +
+                    branch.key +
+                    '/Cupones/' +
+                    coupon.key;
+                  var restaurantData = restaurant.val();
+                  var branchData = branch.val();
+                  var couponData = coupon.val();
+                  couponData.path = path;
+                  var finalCoupon = {
+                    code: coupon.key,
+                    restaurant: restaurantData,
+                    branch: branchData,
+                    description: couponData.Promo,
+                    latitude: branchData.Latitud,
+                    longitude: branchData.Longitud,
+                  };
+                  coupons.push(finalCoupon);
+                });
+              });
+            });
+          });
+        });
+      });
+      setTimeout(() => {
+        console.log(coupons);
+        console.log(coupons[0]);
+        var randomCoupon = coupons[Math.floor(Math.random() * coupons.length)];
+        console.log(randomCoupon);
+        resolve(randomCoupon);
+      }, 500);
+    });
+  };
 
-static defaultProps = {
-  firebaseCoupon: {
-    code: 'CUPONAPPLEBLEESXD',
-    restaurant: "Appleblee's Real Center",
-    description: '2x1 en Anvorguerza',
-    latitude: 20.7326234,
-    longitude: -103.4297673,
-  },
-};
+  static propTypes = {
+    firebaseCoupon: object,
+    code: string,
+    restaurant: string,
+    description: string,
+    latitude: number,
+    longitude: number,
+  };
+
+  static defaultProps = {
+    firebaseCoupon: {
+      code: 'CUPONAPPLEBLEESXD',
+      restaurant: "Appleblee's Real Center",
+      description: '2x1 en Anvorguerza',
+      latitude: 20.7326234,
+      longitude: -103.4297673,
+    },
+  };
 }
 
 export default Coupon;
