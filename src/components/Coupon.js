@@ -10,66 +10,67 @@ class Coupon extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.state);
-    const couponPromise = this.getCoupon();
-    const couponData = await couponPromise;
+    const couponData = await this.getCoupon();
     this.setState({ couponData });
-    console.log(this.state);
   }
 
   render() {
-    if (this.state.couponData == null) {
+    const { couponData } = this.state;
+    if (!couponData) {
       return null;
     }
 
-      return (
-        /*
+    return (
+      /*
         <div>
-        <h1 className="ui center aligned header">{firebaseCoupon.code}</h1>
-        <img
-          src="https://randomqr.com/assets/images/randomqr-256.png"
-          alt="COULD NOT LOAD COUPON"
-          width="300"
-          height="300"
-        ></img>
-        <h2 className="ui center aligned header">{firebaseCoupon.restaurant}</h2>
-        <h2 className="ui center aligned header">{firebaseCoupon.description}</h2>
-        <div className="ui two column centered grid">
-          <div className="column">
-            <StoreMap
-              latitude={firebaseCoupon.latitude}
-              longitude={firebaseCoupon.longitude}
-            ></StoreMap>
-          </div>
-          <div className="four column centered row">
-            <div className="column"></div>
-            <div className="column"></div>
+          <h1 className="ui center aligned header">{firebaseCoupon.code}</h1>
+          <img
+            src="https://randomqr.com/assets/images/randomqr-256.png"
+            alt="COULD NOT LOAD COUPON"
+            width="300"
+            height="300"
+          ></img>
+          <h2 className="ui center aligned header">{firebaseCoupon.restaurant}</h2>
+          <h2 className="ui center aligned header">{firebaseCoupon.description}</h2>
+          <div className="ui two column centered grid">
+            <div className="column">
+              <StoreMap
+                latitude={firebaseCoupon.latitude}
+                longitude={firebaseCoupon.longitude}
+              ></StoreMap>
+            </div>
+            <div className="four column centered row">
+              <div className="column"></div>
+              <div className="column"></div>
+            </div>
           </div>
         </div>
-      </div>
-    );
-        */
-        <div>
-        <h1 className="ui center aligned header">{this.state.couponData.code}</h1>
+      );
+    */
+
+      <div>
+        <h1 className="ui center aligned header">{couponData.code}</h1>
         <img
           src="https://randomqr.com/assets/images/randomqr-256.png"
           alt="COULD NOT LOAD COUPON"
           width="300"
           height="300"
         ></img>
-        <h2 className="ui center aligned header">{this.state.couponData.restaurant.Nombre}</h2>
-        <h2 className="ui center aligned header">{this.state.couponData.branch.Nombre}</h2>
-        <h2 className="ui center aligned header">{this.state.couponData.description}</h2>
+        <h2 className="ui center aligned header">
+          {couponData.restaurant.Nombre}
+        </h2>
+        <h2 className="ui center aligned header">{couponData.branch.Nombre}</h2>
+        <h2 className="ui center aligned header">{couponData.description}</h2>
         <StoreMap
-          latitude={this.state.couponData.latitude}
-          longitude={this.state.couponData.longitude}
+          latitude={couponData.latitude}
+          longitude={couponData.longitude}
         ></StoreMap>
       </div>
     );
   }
 
-  getCoupon = () => {
-    return new Promise((resolve, reject) => {
+  getCoupon = () =>
+    new Promise(resolve => {
       var coupons = [];
       var restaurants = firebase
         .database()
@@ -121,15 +122,15 @@ class Coupon extends Component {
           });
         });
       });
+
       setTimeout(() => {
-        console.log(coupons);
-        console.log(coupons[0]);
-        var randomCoupon = coupons[Math.floor(Math.random() * coupons.length)];
+        const randomCoupon = coupons[Math.floor(Math.random() * coupons.length)];
+        randomCoupon.latitude = Number(randomCoupon.latitude);
+        randomCoupon.longitude = Number(randomCoupon.longitude);
         console.log(randomCoupon);
         resolve(randomCoupon);
-      }, 500)
-    })
-  }
+      }, 500);
+    });
 
   static propTypes = {
     firebaseCoupon: object,
