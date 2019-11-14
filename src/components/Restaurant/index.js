@@ -9,6 +9,8 @@ class Restaurant extends Component {
     super(props);
     this.state = {
       restaurantes: [],
+      key: this.props.match.params.id,
+      nombre: '',
     };
   }
 
@@ -17,11 +19,13 @@ class Restaurant extends Component {
       .database()
       .ref()
       .child('/Restaurantes/');
+
     restRef.on('value', snapshot => {
       let newState = [];
       snapshot.forEach(child => {
         newState.push(child.val());
       });
+
       this.setState({
         restaurantes: newState,
       });

@@ -9,7 +9,11 @@ import * as ROLES from '../constants/roles';
 const Navigation = () => (
   <FirebaseContext.Consumer>
     {authUser =>
-      authUser && authUser.Type ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
+      authUser && authUser.Type ? (
+        <NavigationAuth authUser={authUser} />
+      ) : (
+        <NavigationNonAuth />
+      )
     }
   </FirebaseContext.Consumer>
 );
@@ -67,6 +71,9 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.EDIT_SUCURSAL}>Editar sucursal</Link>
       </MenuItem>
     )}
+    <MenuItem position="right" key={'logout'}>
+      Logout
+    </MenuItem>
   </Menu>
 );
 
