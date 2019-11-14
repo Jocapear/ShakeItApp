@@ -9,10 +9,11 @@ import * as ROLES from '../constants/roles';
 const Navigation = () => (
   <FirebaseContext.Consumer>
     {authUser =>
-      authUser ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
+      authUser && authUser.Type ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
     }
   </FirebaseContext.Consumer>
 );
+
 const NavigationAuth = ({ authUser }) => (
   <Menu secondary={true} pointing={true} defaultActiveIndex={0}>
     {authUser.Type.includes(ROLES.ADMIN) && (
