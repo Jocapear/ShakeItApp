@@ -61,7 +61,7 @@ class Show extends Component {
     });
   }
 
-  delete(id) {
+  delete = id => {
     firebase
       .database()
       .ref()
@@ -81,7 +81,7 @@ class Show extends Component {
       .catch(error => {
         console.error('Error removing coupon: ', error);
       });
-  }
+  };
 
   use(id, cantidad) {
     const ref = firebase
@@ -108,13 +108,11 @@ class Show extends Component {
   }
 
   render() {
-    this.delete = this.delete.bind(this);
-    const { cupones } = this.state;
+    const { cupones, restaurante, sucursal } = this.state;
     return (
       <Container>
-        <Link to={`/show/${this.props.match.params.res}`}>Regresar</Link>
-        <h1>{this.state.restaurante}</h1>
-        <h2>{this.state.sucursal}</h2>
+        <h1>{restaurante}</h1>
+        <h2>{sucursal}</h2>
         <h2>Cupones:</h2>
         <Link
           to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}

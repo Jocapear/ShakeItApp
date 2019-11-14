@@ -52,7 +52,12 @@ class Show extends Component {
       .remove()
       .then(() => {
         console.log('Sucursal borrada!');
-        //this.props.history.push("/")
+        const { sucursales } = this.state;
+        const idx = sucursales.findIndex(succ => succ.ID === id);
+        if (idx !== -1) {
+          sucursales.splice(idx, 1);
+          this.setState({ sucursales });
+        }
       })
       .catch(error => {
         console.error('Error removing coupon: ', error);

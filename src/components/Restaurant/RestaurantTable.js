@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
 import RestaurantTableBody from './RestaurantTableBody';
 
-const RestaurantTable = (props) => (
+const RestaurantTable = props => (
   <Table collapsing celled basic="very" size="large" className="center">
     <Table.Header>
       <Table.Row>

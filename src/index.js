@@ -12,6 +12,7 @@ import Firebase, { FirebaseContext } from './components/Firebase';
 
 import ProtectedRouteHoc from './ProtectedRouteHoc';
 import { AuthContextProvider } from './AuthContext';
+import Header from './components/Header';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -42,6 +43,7 @@ function App() {
     >
       <div className="App">
         <Router>
+          <Header />
           <Switch>
             {protectedRoutes.map(route => (
               <ProtectedRouteHoc
