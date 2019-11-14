@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { object } from 'prop-types';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import React from 'react';
+import firebase from 'firebase';
 import { withRouter, Link, Redirect } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../../AuthContext';
+import useLoginState from './loginState';
 import {
   Loader,
   Container,
@@ -13,10 +12,8 @@ import {
   Divider,
 } from 'semantic-ui-react';
 
-const Join = ({ history }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setErrors] = useState('');
+const Login = ({ history }) => {
+  const [state, actions] = useLoginState();
   const Auth = useAuth();
 
   if (Auth.isLoadingAuth) {
@@ -27,33 +24,30 @@ const Join = ({ history }) => {
     return <Redirect to={{ pathname: '/shake' }} />;
   }
 
-  const handleForm = e => {
+  const login = e => {
     e.preventDefault();
-
     firebase
       .auth()
       .setPersistence(firebase.auth.Auth.Persistence.SESSION)
       .then(() => {
         firebase
           .auth()
-          .createUserWithEmailAndPassword(email, password)
+          .signInWithEmailAndPassword(state.email, state.password)
           .then(res => {
-            console.log(res);
-            history.push('/register');
             if (res.user) {
               Auth.setLoggedIn(true);
               Auth.setUser(res.user);
             }
+            history.push('/shake');
           })
-          .catch(e => {
-            setErrors(e.message);
+          .catch(({ message }) => {
+            actions.setError(message);
           });
       });
   };
 
-  const handleGoogleLogin = () => {
+  const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-
     firebase
       .auth()
       .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -62,26 +56,30 @@ const Join = ({ history }) => {
           .auth()
           .signInWithPopup(provider)
           .then(res => {
-            history.push('/register');
+            history.push('/shake');
             Auth.setLoggedIn(true);
             Auth.setUser(res.user);
           })
-          .catch(e => setErrors(e.message));
+          .catch(({ message }) => {
+            actions.setError(message);
+          });
       });
   };
 
   return (
     <Container text>
-      <Header>Join</Header>
-      <Form onSubmit={e => handleForm(e)}>
+      <Header>Login</Header>
+      <Form onSubmit={e => login(e)}>
         <Form.Input
           label="Email"
           type="email"
           placeholder="email"
           required
           fluid
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          value={state.email}
+          onChange={({ target }) => {
+            actions.setEmail(target.value);
+          }}
         />
         <Form.Input
           label="Password"
@@ -89,31 +87,26 @@ const Join = ({ history }) => {
           placeholder="password"
           required
           fluid
-          value={password}
-          onChange={e => setPassword(e.target.value)}
+          value={state.password}
+          onChange={({ target }) => {
+            actions.setPassword(target.value);
+          }}
         />
-        <Form.Button type="submit">Sign up</Form.Button>
-        <span stype={{ color: 'red' }}>{error}</span>
-
+        <Form.Button type="submit">Login</Form.Button>
+        <span stype={{ color: 'red' }}>{state.error}</span>
         <Divider hidden />
-
-        <Form.Button onClick={handleGoogleLogin} color="blue">
+        <Form.Button color="blue" onClick={signInWithGoogle}>
           <Icon name="google" />
-          Join With Google
+          Login With Google
         </Form.Button>
-
         <Divider horizontal>Or</Divider>
         <p>
-          <strong>Already have an account?</strong>
+          <strong>Don't have an account?</strong>
         </p>
-        <Link to="/">Log in here.</Link>
+        <Link to="/join">Join here.</Link>
       </Form>
     </Container>
   );
 };
 
-Join.propTypes = {
-  history: object,
-};
-
-export default withRouter(Join);
+export default withRouter(Login);

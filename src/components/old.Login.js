@@ -18,26 +18,31 @@ const Login = ({ history }) => {
   if (Auth.isLoggedIn && Auth.user) {
     const ref = firebase.database().ref().child('/Users/' + Auth.user.uid);
     const geoError = function(error) {
-      console.log(error.code)
+      console.log(error.code);
     };
-    const geoSuccess = function(pos){
+    const geoSuccess = function(pos) {
       const crd = pos.coords;
-      ref.child("Metadata").update({
-        last_latitude: crd.latitude,
-        last_longitude: crd.longitude,
-      }).catch((error) => {
-        console.error("Error adding location metadata", error);
-      });
+      ref
+        .child('Metadata')
+        .update({
+          last_latitude: crd.latitude,
+          last_longitude: crd.longitude,
+        })
+        .catch(error => {
+          console.error('Error adding location metadata', error);
+        });
     };
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-  
-    
-    ref.push({last_login: new Date()});
-    ref.child("Metadata").update({
-      last_login: new Date(),
-    }).catch((error) => {
-      console.error("Error adding time metadata", error);
-    });
+
+    ref.push({ last_login: new Date() });
+    ref
+      .child('Metadata')
+      .update({
+        last_login: new Date(),
+      })
+      .catch(error => {
+        console.error('Error adding time metadata', error);
+      });
     return <Redirect to={{ pathname: '/shake' }} />;
   }
 

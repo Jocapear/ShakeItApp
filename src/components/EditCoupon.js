@@ -81,7 +81,7 @@ class EditCoupon extends Component {
         Cantidad: this.state.Cantidad,
         Promo: this.state.Promo,
       })
-      .then(couponRef => {
+      .then(() => {
         this.props.history.push(path);
       })
       .catch(error => {
