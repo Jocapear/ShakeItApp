@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Container, Form } from 'semantic-ui-react';
 
 class AddSucursal extends Component {
   constructor(props) {
     super(props);
+
     this.ref = firebase
       .database()
       .ref()
       .child('/Restaurantes/' + this.props.match.params.res + '/Sucursales/');
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+
     this.state = {
       Latitud: '',
       Longitud: '',
@@ -17,10 +18,8 @@ class AddSucursal extends Component {
     };
   }
 
-  onChange = e => {
-    const target = e.target;
-    const value = target.value;
-    const name = target.name;
+  onChange = ({ target }) => {
+    const { value, name } = target;
     this.setState({
       [name]: value,
     });
@@ -30,20 +29,16 @@ class AddSucursal extends Component {
     e.preventDefault();
     const path = '/show/' + this.props.match.params.res + '/';
     const { Latitud, Longitud, Nombre } = this.state;
-    var newChildRef = this.ref.push({ Nombre: Nombre });
+    const newChildRef = this.ref.push({ Nombre: Nombre });
+
     this.ref
       .child(newChildRef.key)
       .update({
         ID: newChildRef.key,
-        Latitud: Latitud,
-        Longitud: Longitud,
+        Latitud: Number(Latitud),
+        Longitud: Number(Longitud),
       })
       .then(() => {
-        this.setState({
-          Latitud: '',
-          Longitud: '',
-          Nombre: '',
-        });
         this.props.history.push(path);
       })
       .catch(error => {
@@ -52,49 +47,48 @@ class AddSucursal extends Component {
   };
 
   render() {
-    const { Nombre } = this.state.Nombre;
+    const { Nombre, Latitud, Longitud } = this.state;
     return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Nombre">Nombre:</label>
-            <textarea
-              className="form-control"
+      <Container text>
+        <Form onSubmit={this.onSubmit}>
+          <Form.Group widths="equal">
+            <Form.TextArea
+              label="Nombre:"
               name="Nombre"
               onChange={this.onChange}
               placeholder="Nombre"
               cols="40"
               rows="2"
-              defaultValue={Nombre}
+              fluid
+              required
+              value={Nombre}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Latitud">Latitud:</label>
-            <input
+          </Form.Group>
+          <Form.Group widths="2">
+            <Form.Input
               type="number"
+              label="Latitud"
               step="any"
-              className="form-control"
               name="Latitud"
               onChange={this.onChange}
               placeholder="Latitud"
+              required
+              value={Latitud}
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Longitud">Longitud:</label>
-            <input
+            <Form.Input
               type="number"
+              label="Latitud"
               step="any"
-              className="form-control"
               name="Longitud"
               onChange={this.onChange}
               placeholder="Longitud"
+              required
+              value={Longitud}
             />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
+          </Form.Group>
+          <Form.Button type="submit">Submit</Form.Button>
+        </Form>
+      </Container>
     );
   }
 }
