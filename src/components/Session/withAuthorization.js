@@ -7,15 +7,15 @@ import { withFirebase } from '../Firebase/context.js';
 import * as ROUTES from '../../constants/routes';
 
 const withAuthorization = condition => Component => {
-  class Firebase extends React.Component {
+  class WithAuthorization extends React.Component {
     componentDidMount() {
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
           if (!condition(authUser)) {
-            this.props.history.push(ROUTES.LOGIN);
+            this.props.history.push(ROUTES.SHAKE);
           }
         },
-        () => this.props.history.push(ROUTES.LOGIN)
+        () => this.props.history.push(ROUTES.SHAKE),
       );
     }
 
