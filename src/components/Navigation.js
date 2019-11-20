@@ -31,11 +31,11 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.ADD_RESTAURANT}>Agregar restaurante</Link>
       </MenuItem>
     )}
-    {authUser.Type.includes(ROLES.ADMIN) && (
+    {/* {authUser.Type.includes(ROLES.ADMIN) && (
       <MenuItem>
         <Link to={ROUTES.EDIT_RESTAURANT}>Editar sucursal</Link>
       </MenuItem>
-    )}
+    )} */}
     {(authUser.Type.includes(ROLES.ADMIN) ||
       authUser.Type.includes(ROLES.RESTAURANT)) && (
       <MenuItem>
@@ -60,18 +60,18 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.ADD_SUCURSAL}>Agregar sucursal</Link>
       </MenuItem>
     )}
-    {(authUser.Type.includes(ROLES.ADMIN) ||
+    {/* {(authUser.Type.includes(ROLES.ADMIN) ||
       authUser.Type.includes(ROLES.RESTAURANT)) && (
       <MenuItem>
         <Link to={ROUTES.EDIT_COUPON}>Editar cupon</Link>
       </MenuItem>
-    )}
-    {(authUser.Type.includes(ROLES.ADMIN) ||
+    )} */}
+    {/* {(authUser.Type.includes(ROLES.ADMIN) ||
       authUser.Type.includes(ROLES.RESTAURANT)) && (
       <MenuItem>
         <Link to={ROUTES.EDIT_SUCURSAL}>Editar sucursal</Link>
       </MenuItem>
-    )}
+    )} */}
     <MenuItem
       position="right"
       key={'logout'}
