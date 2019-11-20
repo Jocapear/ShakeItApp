@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Container, Form } from 'semantic-ui-react';
 
 class EditCoupon extends Component {
   constructor(props) {
@@ -91,35 +92,27 @@ class EditCoupon extends Component {
 
   render() {
     return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Promo">Promoción:</label>
-            <textarea
-              className="form-control"
-              name="Promo"
-              onChange={this.onChange}
-              placeholder="Promo"
-              cols="40"
-              rows="2"
-              value={this.state.Promo}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Cantidad">Cantidad:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="Cantidad"
-              onChange={this.onChange}
-              defaultValue={this.state.Cantidad}
-            />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
+      <Container text>
+        <Form onSubmit={this.onSubmit}>
+          <Form.TextArea
+            name="Promo"
+            onChange={this.onChange}
+            placeholder="Promo"
+            label="Promoción:"
+            cols="40"
+            rows="2"
+            value={this.state.Promo}
+          />
+          <Form.Input
+            type="number"
+            name="Cantidad"
+            label="Cantidad:"
+            onChange={this.onChange}
+            value={this.state.Cantidad}
+          />
+          <Form.Button type="submit">Submit</Form.Button>
+        </Form>
+      </Container>
     );
   }
 }
