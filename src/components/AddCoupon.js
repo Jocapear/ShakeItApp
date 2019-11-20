@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Container, Form } from 'semantic-ui-react';
 
 class AddCoupon extends Component {
   constructor(props) {
@@ -14,8 +15,7 @@ class AddCoupon extends Component {
           this.props.match.params.id +
           '/Cupones/'
       );
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+
     this.state = {
       Cantidad: '',
       Promo: '',
@@ -40,12 +40,12 @@ class AddCoupon extends Component {
       this.props.match.params.id +
       '/';
     const { Cantidad, Promo } = this.state;
-    var newChildRef = this.ref.push({ Cantidad: Cantidad });
+    var newChildRef = this.ref.push({ Cantidad });
     this.ref
       .child(newChildRef.key)
       .update({
         ID: newChildRef.key,
-        Promo: Promo,
+        Promo,
       })
       .then(() => {
         this.setState({
@@ -60,37 +60,30 @@ class AddCoupon extends Component {
   };
 
   render() {
-    const { Promo } = this.state.Promo;
+    const { Cantidad, Promo } = this.state;
     return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Promo">Promoción:</label>
-            <textarea
-              className="form-control"
-              name="Promo"
-              onChange={this.onChange}
-              placeholder="Promo"
-              cols="40"
-              rows="2"
-              defaultValue={Promo}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Cantidad">Cantidad:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="Cantidad"
-              onChange={this.onChange}
-              placeholder="Cantidad"
-            />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
+      <Container text>
+        <Form onSubmit={this.onSubmit}>
+          <Form.TextArea
+            name="Promo"
+            label="Promoción:"
+            onChange={this.onChange}
+            placeholder="Promo"
+            cols="40"
+            rows="2"
+            value={Promo}
+          />
+          <Form.Input
+            type="number"
+            name="Cantidad"
+            label="Cantidad:"
+            onChange={this.onChange}
+            placeholder="Cantidad"
+            value={Cantidad}
+          />
+          <Form.Button type="submit">Submit</Form.Button>
+        </Form>
+      </Container>
     );
   }
 }
