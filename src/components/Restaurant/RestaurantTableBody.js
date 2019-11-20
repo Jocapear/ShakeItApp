@@ -47,7 +47,7 @@ const RestaurantTableBody = ({
               type === 'sucursal'
                 ? `:id/${res.ID}`
                 : type === 'cupon'
-                ? `:res/:id/res.ID`
+                ? `:res/:id/${res.ID}`
                 : res.ID
             }`}
           >

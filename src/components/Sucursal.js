@@ -120,7 +120,7 @@ class Coupons extends Component {
         >
           Crear Cupón
         </Link>
-        <Divider clearing />
+        <Divider hidden />
         <RestaurantTable
           type="cupon"
           restaurants={cupones}
