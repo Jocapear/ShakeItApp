@@ -5,6 +5,7 @@ import { Menu, MenuItem } from 'semantic-ui-react';
 import FirebaseContext from './Firebase/context.js';
 import * as ROUTES from '../constants/routes';
 import * as ROLES from '../constants/roles';
+import firebaseConfig from '../firebaseConfig';
 
 const Navigation = () => (
   <FirebaseContext.Consumer>
@@ -30,11 +31,11 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.ADD_RESTAURANT}>Agregar restaurante</Link>
       </MenuItem>
     )}
-    {authUser.Type.includes(ROLES.ADMIN) && (
+    {/* {authUser.Type.includes(ROLES.ADMIN) && (
       <MenuItem>
         <Link to={ROUTES.EDIT_RESTAURANT}>Editar sucursal</Link>
       </MenuItem>
-    )}
+    )} */}
     {(authUser.Type.includes(ROLES.ADMIN) ||
       authUser.Type.includes(ROLES.RESTAURANT)) && (
       <MenuItem>
@@ -59,19 +60,28 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.ADD_SUCURSAL}>Agregar sucursal</Link>
       </MenuItem>
     )}
-    {(authUser.Type.includes(ROLES.ADMIN) ||
+    {/* {(authUser.Type.includes(ROLES.ADMIN) ||
       authUser.Type.includes(ROLES.RESTAURANT)) && (
       <MenuItem>
         <Link to={ROUTES.EDIT_COUPON}>Editar cupon</Link>
       </MenuItem>
-    )}
-    {(authUser.Type.includes(ROLES.ADMIN) ||
+    )} */}
+    {/* {(authUser.Type.includes(ROLES.ADMIN) ||
       authUser.Type.includes(ROLES.RESTAURANT)) && (
       <MenuItem>
         <Link to={ROUTES.EDIT_SUCURSAL}>Editar sucursal</Link>
       </MenuItem>
-    )}
-    <MenuItem position="right" key={'logout'}>
+    )} */}
+    <MenuItem
+      position="right"
+      key={'logout'}
+      onClick={() => {
+        sessionStorage.removeItem(
+          `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+        );
+        window.location = '/';
+      }}
+    >
       Logout
     </MenuItem>
   </Menu>

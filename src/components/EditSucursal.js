@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Container, Form } from 'semantic-ui-react';
 
 class EditSucursal extends Component {
   constructor(props) {
@@ -88,7 +89,7 @@ class EditSucursal extends Component {
         Latitud: this.state.Latitud,
         Longitud: this.state.Longitud,
       })
-      .then(couponRef => {
+      .then(() => {
         this.props.history.push(path);
       })
       .catch(error => {
@@ -97,45 +98,35 @@ class EditSucursal extends Component {
   };
 
   render() {
+    const { Nombre, Latitud, Longitud } = this.state;
     return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Nombre">Nombre:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="Nombre"
-              onChange={this.onChange}
-              placeholder="Nombre"
-              value={this.state.Nombre}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Latitud">Latitud:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="Latitud"
-              onChange={this.onChange}
-              value={this.state.Latitud}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="Longitud">Longitud:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="Longitud"
-              onChange={this.onChange}
-              value={this.state.Longitud}
-            />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
+      <Container text>
+        <Form onSubmit={this.onSubmit}>
+          <Form.Input
+            type="text"
+            name="Nombre"
+            label="Nombre:"
+            onChange={this.onChange}
+            placeholder="Nombre"
+            value={Nombre}
+          />
+          <Form.Input
+            type="number"
+            name="Latitud"
+            label="Latitud:"
+            onChange={this.onChange}
+            value={Latitud}
+          />
+          <Form.Input
+            type="number"
+            name="Longitud"
+            label="Longitud:"
+            onChange={this.onChange}
+            value={Longitud}
+          />
+          <Form.Button type="submit">Submit</Form.Button>
+        </Form>
+      </Container>
     );
   }
 }

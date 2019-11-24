@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Link } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import { Container, Header, Divider } from 'semantic-ui-react';
+import RestaurantTable from './Restaurant/RestaurantTable';
 
-class Show extends Component {
+class Coupons extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,7 +84,7 @@ class Show extends Component {
       });
   };
 
-  use(id, cantidad) {
+  use = (id, cantidad) => {
     const ref = firebase
       .database()
       .ref()
@@ -105,73 +106,30 @@ class Show extends Component {
       .catch(error => {
         console.error('Error removing coupon: ', error);
       });
-  }
+  };
 
   render() {
     const { cupones, restaurante, sucursal } = this.state;
     return (
       <Container>
-        <h1>{restaurante}</h1>
-        <h2>{sucursal}</h2>
-        <h2>Cupones:</h2>
+        <Header size="huge">{restaurante}</Header>
+        <Header>{sucursal}</Header>
+        <Header size="large">Cupones:</Header>
         <Link
           to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}
         >
           Crear Cupón
         </Link>
-        <table>
-          <thead>
-            <tr>
-              <th> Cupón </th>
-              <th> Cantidad </th>
-              <th> Usar </th>
-              <th> Borrar </th>
-              <th> Editar </th>
-            </tr>
-          </thead>
-          <tbody>
-            {cupones.map(cupon => (
-              <tr key={cupon.ID}>
-                <td>{cupon.Promo}</td>
-                <td>{cupon.Cantidad}</td>
-                <td>
-                  {' '}
-                  <button
-                    onClick={this.use.bind(this, cupon.ID, cupon.Cantidad)}
-                    className="btn"
-                  >
-                    Usar
-                  </button>{' '}
-                </td>
-                <td>
-                  {' '}
-                  <button
-                    onClick={() => {
-                      if (window.confirm('¿Quiéres borrar esta sucursal?')) {
-                        this.delete(cupon.ID);
-                      }
-                    }}
-                    className="btn"
-                  >
-                    Borrar
-                  </button>{' '}
-                </td>
-                <td>
-                  {' '}
-                  <Link
-                    to={`/edit/${this.props.match.params.res}/${this.props.match.params.id}/${cupon.ID}`}
-                  >
-                    {' '}
-                    Editar{' '}
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Divider hidden />
+        <RestaurantTable
+          type="cupon"
+          restaurants={cupones}
+          removeRestaurant={this.delete}
+          couponUse={this.use}
+        />
       </Container>
     );
   }
 }
 
-export default Show;
+export default Coupons;
