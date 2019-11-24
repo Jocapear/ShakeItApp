@@ -25,7 +25,7 @@ class Show extends Component {
             .ref(`/Users/${user.uid}/`)
             .on("value", snapshot => {
               if (snapshot && snapshot.exists()) {
-                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.CLIENT) {
+                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.RESTAURANT) {
                   this.setState({
                     visible: 1,
                   });
