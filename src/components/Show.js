@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Container, Header, Divider } from 'semantic-ui-react';
 import RestaurantTable from './Restaurant/RestaurantTable';
+import * as ROLES from '../constants/roles';
 
 class Show extends Component {
   constructor(props) {
@@ -11,10 +12,46 @@ class Show extends Component {
       sucursales: [],
       key: this.props.match.params.id,
       nombre: '',
+      visible: 0
     };
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        if (user.uid != null) {
+          firebase
+            .database()
+            .ref(`/Users/${user.uid}/`)
+            .on("value", snapshot => {
+              if (snapshot && snapshot.exists()) {
+                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.CLIENT) {
+                  this.setState({
+                    visible: 1,
+                  });
+                } else if (snapshot.val().Type == ROLES.CLIENT) {
+                  this.setState({
+                    visible: 2,
+                  });
+                } else {
+                  this.setState({
+                    visible: 3,
+                  });
+                }
+              } else {
+                this.setState({
+                  visible: 2,
+                });
+              }
+            })
+        }
+      } else {
+        this.setState({
+          visible: 2,
+        });
+      }
+    }.bind(this));
+
     const restRef = firebase
       .database()
       .ref()
@@ -66,20 +103,31 @@ class Show extends Component {
 
   render() {
     const { sucursales, key, nombre } = this.state;
-    return (
-      <Container text>
-        <Header size="huge">{nombre}</Header>
-        <Header size="large">Sucursales:</Header>
-        <Divider clearing />
-        <RestaurantTable
-          type="sucursal"
-          restaurants={sucursales}
-          removeRestaurant={this.delete}
-        />
-        <Divider hidden />
-        <Link to={`/add/${key}`}>Crear Sucursal</Link>
-      </Container>
-    );
+    if (this.state.visible == 0) {
+      return (
+          <Container text>
+          </Container>
+      );
+    } else if (this.state.visible == 1) {
+      return (
+          <Container text>
+          <Header size="huge">{nombre}</Header>
+          <Header size="large">Sucursales:</Header>
+          <Divider clearing />
+          <RestaurantTable
+            type="sucursal"
+            restaurants={sucursales}
+            removeRestaurant={this.delete}
+          />
+          <Divider hidden />
+          <Link to={`/add/${key}`}>Crear Sucursal</Link>
+        </Container>
+      );
+    } else if (this.state.visible == 3) {
+      return <Redirect to={{ pathname: '/register' }} />;
+    } else {
+      return <Redirect to={{ pathname: '/' }} />;
+    }
   }
 }
 
