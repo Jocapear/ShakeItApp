@@ -16,6 +16,7 @@ class AddRestaurant extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       Nombre: '',
+      visible: 0,
     };
   }
 
