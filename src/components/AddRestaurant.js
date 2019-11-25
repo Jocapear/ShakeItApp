@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Container, Form } from 'semantic-ui-react';
 
 class AddRestaurant extends Component {
   constructor(props) {
@@ -8,8 +9,7 @@ class AddRestaurant extends Component {
       .database()
       .ref()
       .child('/Restaurantes/');
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+
     this.state = {
       Nombre: '',
     };
@@ -45,27 +45,22 @@ class AddRestaurant extends Component {
   };
 
   render() {
-    const { Nombre } = this.state.Nombre;
+    const { Nombre } = this.state;
     return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Nombre">Nombre:</label>
-            <textarea
-              className="form-control"
-              name="Nombre"
-              onChange={this.onChange}
-              placeholder="Nombre"
-              cols="40"
-              rows="2"
-              defaultValue={Nombre}
-            />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
+      <Container text>
+        <Form onSubmit={this.onSubmit}>
+          <Form.TextArea
+            name="Nombre"
+            label="Nombre:"
+            onChange={this.onChange}
+            placeholder="Nombre"
+            cols="40"
+            rows="2"
+            value={Nombre}
+          />
+          <Form.Button type="submit">Submit</Form.Button>
+        </Form>
+      </Container>
     );
   }
 }

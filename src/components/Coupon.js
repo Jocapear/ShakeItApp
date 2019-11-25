@@ -124,12 +124,13 @@ class Coupon extends Component {
       });
 
       setTimeout(() => {
-        const randomCoupon = coupons[Math.floor(Math.random() * coupons.length)];
+        const randomIndex = Math.floor(Math.random() * coupons.length);
+        const randomCoupon = coupons[randomIndex];
         randomCoupon.latitude = Number(randomCoupon.latitude);
         randomCoupon.longitude = Number(randomCoupon.longitude);
-        console.log(randomCoupon);
+        console.log('selected coupon is:', randomCoupon);
         resolve(randomCoupon);
-      }, 500);
+      }, 750);
     });
 
   static propTypes = {
