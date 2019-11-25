@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import 'firebase/auth';
 import { Link, Redirect } from 'react-router-dom';
 import { Container, Header, Divider } from 'semantic-ui-react';
 import RestaurantTable from './Restaurant/RestaurantTable';

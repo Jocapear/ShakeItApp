@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import 'firebase/auth';
+import { Container } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import * as ROLES from '../constants/roles';
 
 class AddRestaurant extends Component {
   constructor(props) {
@@ -13,6 +17,43 @@ class AddRestaurant extends Component {
     this.state = {
       Nombre: '',
     };
+  }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        if (user.uid != null) {
+          firebase
+            .database()
+            .ref(`/Users/${user.uid}/`)
+            .on("value", snapshot => {
+              if (snapshot && snapshot.exists()) {
+                if (snapshot.val().Type == ROLES.ADMIN) {
+                  this.setState({
+                    visible: 1,
+                  });
+                } else if (snapshot.val().Type == ROLES.CLIENT || snapshot.val().Type == ROLES.RESTAURANT) {
+                  this.setState({
+                    visible: 2,
+                  });
+                } else {
+                  this.setState({
+                    visible: 3,
+                  });
+                }
+              } else {
+                this.setState({
+                  visible: 2,
+                });
+              }
+            })
+        }
+      } else {
+        this.setState({
+          visible: 2,
+        });
+      }
+    }.bind(this));
   }
 
   onChange = e => {
@@ -46,27 +87,39 @@ class AddRestaurant extends Component {
 
   render() {
     const { Nombre } = this.state.Nombre;
-    return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Nombre">Nombre:</label>
-            <textarea
-              className="form-control"
-              name="Nombre"
-              onChange={this.onChange}
-              placeholder="Nombre"
-              cols="40"
-              rows="2"
-              defaultValue={Nombre}
-            />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
-    );
+
+    if (this.state.visible == 0) {
+      return (
+          <Container text>
+          </Container>
+      );
+    } else if (this.state.visible == 1) {
+      return (
+        <div className="App-header">
+          <form onSubmit={this.onSubmit}>
+            <div className="form-group">
+              <label htmlFor="Nombre">Nombre:</label>
+              <textarea
+                className="form-control"
+                name="Nombre"
+                onChange={this.onChange}
+                placeholder="Nombre"
+                cols="40"
+                rows="2"
+                defaultValue={Nombre}
+              />
+            </div>
+            <button type="submit" className="btn-success">
+              Submit
+            </button>
+          </form>
+        </div>
+      );
+    } else if (this.state.visible == 3) {
+      return <Redirect to={{ pathname: '/register' }} />;
+    } else {
+      return <Redirect to={{ pathname: '/' }} />;
+    }
   }
 }
 

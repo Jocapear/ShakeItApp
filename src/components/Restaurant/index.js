@@ -13,10 +13,46 @@ class Restaurant extends Component {
       restaurantes: [],
       key: this.props.match.params.id,
       nombre: '',
+      visible: 0,
     };
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        if (user.uid != null) {
+          firebase
+            .database()
+            .ref(`/Users/${user.uid}/`)
+            .on("value", snapshot => {
+              if (snapshot && snapshot.exists()) {
+                if (snapshot.val().Type == ROLES.ADMIN) {
+                  this.setState({
+                    visible: 1,
+                  });
+                } else if (snapshot.val().Type == ROLES.CLIENT || snapshot.val().Type == ROLES.RESTAURANT ) {
+                  this.setState({
+                    visible: 2,
+                  });
+                } else {
+                  this.setState({
+                    visible: 3,
+                  });
+                }
+              } else {
+                this.setState({
+                  visible: 2,
+                });
+              }
+            })
+        }
+      } else {
+        this.setState({
+          visible: 2,
+        });
+      }
+    }.bind(this));
+
     const restRef = firebase
       .database()
       .ref()
@@ -49,31 +85,12 @@ class Restaurant extends Component {
 
   render() {
     const { restaurantes } = this.state;
-    var isUser = true
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user != null) {
-        if (user.uid != null) {
-          firebase
-            .database()
-            .ref(
-              `/Users/${user.uid}/`
-            )
-            .on("value", snapshot => {
-              if (snapshot && snapshot.exists()) {
-                console.log(snapshot.val().Type)
-                if (snapshot.val().Type == ROLES.CLIENT) {
-                  console.log(snapshot.val().Type)
-                  return <Redirect to={{ pathname: '/' }} />;
-                }
-              }})
-        }
-      } else {
-        isUser = false
-        console.log("LOGIN")
-        return <Redirect to={{ pathname: '/' }} />;
-      }
-    });
-    if (isUser) {
+    if (this.state.visible == 0) {
+      return (
+          <Container text>
+          </Container>
+      );
+    } else if (this.state.visible == 1) {
       return (
         <Container text>
           <Header size="huge">Restaurantes</Header>
@@ -88,6 +105,8 @@ class Restaurant extends Component {
           <Link to="/add">Crear restaurante</Link>
         </Container>
       );
+    } else if (this.state.visible == 3) {
+      return <Redirect to={{ pathname: '/register' }} />;
     } else {
       return <Redirect to={{ pathname: '/' }} />;
     }

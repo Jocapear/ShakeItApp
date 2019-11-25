@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import 'firebase/auth';
 import { Container, Form } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 import * as ROLES from '../constants/roles';
