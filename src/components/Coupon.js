@@ -2,14 +2,50 @@ import React, { Component } from 'react';
 import { string, number, object } from 'prop-types';
 import StoreMap from './StoreMap';
 import firebase from 'firebase';
+import { Container } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import * as ROLES from '../constants/roles';
 
 class Coupon extends Component {
   constructor() {
     super();
-    this.state = { couponData: null };
+    this.state = { 
+      couponData: null,
+      visible: 0,
+    };
   }
 
   async componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        if (user.uid != null) {
+          firebase
+            .database()
+            .ref(`/Users/${user.uid}/`)
+            .on("value", snapshot => {
+              if (snapshot && snapshot.exists()) {
+                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.RESTAURANT || snapshot.val().Type == ROLES.CLIENT) {
+                  this.setState({
+                    visible: 1,
+                  });
+                } else {
+                  this.setState({
+                    visible: 3,
+                  });
+                }
+              } else {
+                this.setState({
+                  visible: 2,
+                });
+              }
+            })
+        }
+      } else {
+        this.setState({
+          visible: 2,
+        });
+      }
+    }.bind(this));
     const couponData = await this.getCoupon();
     this.setState({ couponData });
   }
@@ -19,54 +55,64 @@ class Coupon extends Component {
     if (!couponData) {
       return null;
     }
+    if (this.state.visible == 0) {
+      return (
+          <Container text>
+          </Container>
+      );
+    } else if (this.state.visible == 1) {
+      return (
+        /*
+          <div>
+            <h1 className="ui center aligned header">{firebaseCoupon.code}</h1>
+            <img
+              src="https://randomqr.com/assets/images/randomqr-256.png"
+              alt="COULD NOT LOAD COUPON"
+              width="300"
+              height="300"
+            ></img>
+            <h2 className="ui center aligned header">{firebaseCoupon.restaurant}</h2>
+            <h2 className="ui center aligned header">{firebaseCoupon.description}</h2>
+            <div className="ui two column centered grid">
+              <div className="column">
+                <StoreMap
+                  latitude={firebaseCoupon.latitude}
+                  longitude={firebaseCoupon.longitude}
+                ></StoreMap>
+              </div>
+              <div className="four column centered row">
+                <div className="column"></div>
+                <div className="column"></div>
+              </div>
+            </div>
+          </div>
+        );
+      */
 
-    return (
-      /*
         <div>
-          <h1 className="ui center aligned header">{firebaseCoupon.code}</h1>
+          <h1 className="ui center aligned header">{couponData.code}</h1>
           <img
             src="https://randomqr.com/assets/images/randomqr-256.png"
             alt="COULD NOT LOAD COUPON"
             width="300"
             height="300"
           ></img>
-          <h2 className="ui center aligned header">{firebaseCoupon.restaurant}</h2>
-          <h2 className="ui center aligned header">{firebaseCoupon.description}</h2>
-          <div className="ui two column centered grid">
-            <div className="column">
-              <StoreMap
-                latitude={firebaseCoupon.latitude}
-                longitude={firebaseCoupon.longitude}
-              ></StoreMap>
-            </div>
-            <div className="four column centered row">
-              <div className="column"></div>
-              <div className="column"></div>
-            </div>
-          </div>
+          <h2 className="ui center aligned header">
+            {couponData.restaurant.Nombre}
+          </h2>
+          <h2 className="ui center aligned header">{couponData.branch.Nombre}</h2>
+          <h2 className="ui center aligned header">{couponData.description}</h2>
+          <StoreMap
+            latitude={couponData.latitude}
+            longitude={couponData.longitude}
+          ></StoreMap>
         </div>
       );
-    */
-
-      <div>
-        <h1 className="ui center aligned header">{couponData.code}</h1>
-        <img
-          src="https://randomqr.com/assets/images/randomqr-256.png"
-          alt="COULD NOT LOAD COUPON"
-          width="300"
-          height="300"
-        ></img>
-        <h2 className="ui center aligned header">
-          {couponData.restaurant.Nombre}
-        </h2>
-        <h2 className="ui center aligned header">{couponData.branch.Nombre}</h2>
-        <h2 className="ui center aligned header">{couponData.description}</h2>
-        <StoreMap
-          latitude={couponData.latitude}
-          longitude={couponData.longitude}
-        ></StoreMap>
-      </div>
-    );
+    } else if (this.state.visible == 3) {
+      return <Redirect to={{ pathname: '/register' }} />;
+    } else {
+      return <Redirect to={{ pathname: '/' }} />;
+    }
   }
 
   getCoupon = () =>
