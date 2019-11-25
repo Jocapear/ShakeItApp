@@ -11,10 +11,45 @@ class Coupons extends Component {
       cupones: [],
       restaurante: '',
       sucursal: '',
+      visible: 0,
     };
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        if (user.uid != null) {
+          firebase
+            .database()
+            .ref(`/Users/${user.uid}/`)
+            .on("value", snapshot => {
+              if (snapshot && snapshot.exists()) {
+                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.RESTAURANT) {
+                  this.setState({
+                    visible: 1,
+                  });
+                } else if (snapshot.val().Type == ROLES.CLIENT ) {
+                  this.setState({
+                    visible: 2,
+                  });
+                } else {
+                  this.setState({
+                    visible: 3,
+                  });
+                }
+              } else {
+                this.setState({
+                  visible: 2,
+                });
+              }
+            })
+        }
+      } else {
+        this.setState({
+          visible: 2,
+        });
+      }
+    }.bind(this));
     const restRef = firebase
       .database()
       .ref()
@@ -110,25 +145,37 @@ class Coupons extends Component {
 
   render() {
     const { cupones, restaurante, sucursal } = this.state;
-    return (
-      <Container>
-        <Header size="huge">{restaurante}</Header>
-        <Header>{sucursal}</Header>
-        <Header size="large">Cupones:</Header>
-        <Link
-          to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}
-        >
-          Crear Cupón
-        </Link>
-        <Divider hidden />
-        <RestaurantTable
-          type="cupon"
-          restaurants={cupones}
-          removeRestaurant={this.delete}
-          couponUse={this.use}
-        />
-      </Container>
-    );
+
+    if (this.state.visible == 0) {
+      return (
+          <Container text>
+          </Container>
+      );
+    } else if (this.state.visible == 1) {
+      return (
+        <Container>
+          <Header size="huge">{restaurante}</Header>
+          <Header>{sucursal}</Header>
+          <Header size="large">Cupones:</Header>
+          <Link
+            to={`/add/${this.props.match.params.res}/${this.props.match.params.id}`}
+          >
+            Crear Cupón
+          </Link>
+          <Divider hidden />
+          <RestaurantTable
+            type="cupon"
+            restaurants={cupones}
+            removeRestaurant={this.delete}
+            couponUse={this.use}
+          />
+        </Container>
+      );
+    } else if (this.state.visible == 3) {
+      return <Redirect to={{ pathname: '/register' }} />;
+    } else {
+      return <Redirect to={{ pathname: '/' }} />;
+    }
   }
 }
 

@@ -20,6 +20,7 @@ class EditSucursal extends Component {
       Nombre: '',
       Latitud: '',
       Longitud: '',
+      visible: 0,
     };
   }
 
@@ -32,11 +33,11 @@ class EditSucursal extends Component {
             .ref(`/Users/${user.uid}/`)
             .on("value", snapshot => {
               if (snapshot && snapshot.exists()) {
-                if (snapshot.val().Type == ROLES.ADMIN) {
+                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.RESTAURANT) {
                   this.setState({
                     visible: 1,
                   });
-                } else if (snapshot.val().Type == ROLES.CLIENT || snapshot.val().Type == ROLES.RESTAURANT) {
+                } else if (snapshot.val().Type == ROLES.CLIENT) {
                   this.setState({
                     visible: 2,
                   });
