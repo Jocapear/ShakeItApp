@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Container, Form } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import * as ROLES from '../constants/roles';
 
 class EditSucursal extends Component {
   constructor(props) {
@@ -18,10 +20,45 @@ class EditSucursal extends Component {
       Nombre: '',
       Latitud: '',
       Longitud: '',
+      visible: 0,
     };
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user != null) {
+        if (user.uid != null) {
+          firebase
+            .database()
+            .ref(`/Users/${user.uid}/`)
+            .on("value", snapshot => {
+              if (snapshot && snapshot.exists()) {
+                if (snapshot.val().Type == ROLES.ADMIN || snapshot.val().Type == ROLES.RESTAURANT) {
+                  this.setState({
+                    visible: 1,
+                  });
+                } else if (snapshot.val().Type == ROLES.CLIENT) {
+                  this.setState({
+                    visible: 2,
+                  });
+                } else {
+                  this.setState({
+                    visible: 3,
+                  });
+                }
+              } else {
+                this.setState({
+                  visible: 2,
+                });
+              }
+            })
+        }
+      } else {
+        this.setState({
+          visible: 2,
+        });
+      }
+    }.bind(this));
     const ref1 = firebase
       .database()
       .ref()
@@ -99,35 +136,46 @@ class EditSucursal extends Component {
 
   render() {
     const { Nombre, Latitud, Longitud } = this.state;
-    return (
-      <Container text>
-        <Form onSubmit={this.onSubmit}>
-          <Form.Input
-            type="text"
-            name="Nombre"
-            label="Nombre:"
-            onChange={this.onChange}
-            placeholder="Nombre"
-            value={Nombre}
-          />
-          <Form.Input
-            type="number"
-            name="Latitud"
-            label="Latitud:"
-            onChange={this.onChange}
-            value={Latitud}
-          />
-          <Form.Input
-            type="number"
-            name="Longitud"
-            label="Longitud:"
-            onChange={this.onChange}
-            value={Longitud}
-          />
-          <Form.Button type="submit">Submit</Form.Button>
-        </Form>
-      </Container>
-    );
+    if (this.state.visible == 0) {
+      return (
+          <Container text>
+          </Container>
+      );
+    } else if (this.state.visible == 1) {
+      return (
+        <Container text>
+          <Form onSubmit={this.onSubmit}>
+            <Form.Input
+              type="text"
+              name="Nombre"
+              label="Nombre:"
+              onChange={this.onChange}
+              placeholder="Nombre"
+              value={Nombre}
+            />
+            <Form.Input
+              type="number"
+              name="Latitud"
+              label="Latitud:"
+              onChange={this.onChange}
+              value={Latitud}
+            />
+            <Form.Input
+              type="number"
+              name="Longitud"
+              label="Longitud:"
+              onChange={this.onChange}
+              value={Longitud}
+            />
+            <Form.Button type="submit">Submit</Form.Button>
+          </Form>
+        </Container>
+      );
+    } else if (this.state.visible == 3) {
+      return <Redirect to={{ pathname: '/register' }} />;
+    } else {
+      return <Redirect to={{ pathname: '/' }} />;
+    }
   }
 }
 
