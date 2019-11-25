@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Container, Form } from 'semantic-ui-react';
 
 class EditRestaurante extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class EditRestaurante extends Component {
       .update({
         Nombre: this.state.Nombre,
       })
-      .then(couponRef => {
+      .then(() => {
         this.props.history.push('/restaurant');
       })
       .catch(error => {
@@ -50,24 +51,19 @@ class EditRestaurante extends Component {
 
   render() {
     return (
-      <div className="App-header">
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label htmlFor="Nombre">Nombre:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="Nombre"
-              onChange={this.onChange}
-              placeholder="Nombre"
-              value={this.state.Nombre}
-            />
-          </div>
-          <button type="submit" className="btn-success">
-            Submit
-          </button>
-        </form>
-      </div>
+      <Container text>
+        <Form onSubmit={this.onSubmit}>
+          <Form.Input
+            type="text"
+            label="Nombre:"
+            name="Nombre"
+            onChange={this.onChange}
+            placeholder="Nombre"
+            value={this.state.Nombre}
+          />
+          <Form.Button type="submit">Submit</Form.Button>
+        </Form>
+      </Container>
     );
   }
 }
