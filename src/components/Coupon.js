@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import { Container } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 import * as ROLES from '../constants/roles';
+var QRCode = require('qrcode.react');
 
 class Coupon extends Component {
   constructor() {
@@ -91,12 +92,7 @@ class Coupon extends Component {
 
         <div>
           <h1 className="ui center aligned header">{couponData.code}</h1>
-          <img
-            src="https://randomqr.com/assets/images/randomqr-256.png"
-            alt="COULD NOT LOAD COUPON"
-            width="300"
-            height="300"
-          ></img>
+          <QRCode value={couponData.code} size="400"></QRCode>
           <h2 className="ui center aligned header">
             {couponData.restaurant.Nombre}
           </h2>
