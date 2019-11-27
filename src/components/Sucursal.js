@@ -3,6 +3,8 @@ import firebase from 'firebase';
 import { Link } from 'react-router-dom';
 import { Container, Header, Divider } from 'semantic-ui-react';
 import RestaurantTable from './Restaurant/RestaurantTable';
+import { Redirect } from 'react-router-dom';
+import * as ROLES from '../constants/roles';
 
 class Coupons extends Component {
   constructor(props) {
