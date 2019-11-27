@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import { withRouter, Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
 import useLoginState from './loginState';
+
 import {
   Loader,
   Container,
@@ -11,6 +12,7 @@ import {
   Icon,
   Divider,
 } from 'semantic-ui-react';
+//import { getConsoleOutput } from '@jest/console';
 
 const Login = ({ history }) => {
   const [state, actions] = useLoginState();
@@ -24,7 +26,7 @@ const Login = ({ history }) => {
     return <Redirect to={{ pathname: '/shake' }} />;
   }
 
-  const login = e => {
+  const login = async e => {
     e.preventDefault();
     firebase
       .auth()
@@ -56,9 +58,9 @@ const Login = ({ history }) => {
           .auth()
           .signInWithPopup(provider)
           .then(res => {
-            history.push('/shake');
             Auth.setLoggedIn(true);
             Auth.setUser(res.user);
+            history.push('/shake');
           })
           .catch(({ message }) => {
             actions.setError(message);
